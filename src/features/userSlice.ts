@@ -9,7 +9,18 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            const user = action.payload;
+            const { nome, cpf, nascimento, altura, exames, email, foto } =
+                action.payload;
+
+            const user = new User(
+                nome,
+                cpf,
+                new Date(nascimento),
+                exames,
+                altura,
+                email,
+                foto
+            );
 
             state.user = user;
         },

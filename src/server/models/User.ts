@@ -1,31 +1,16 @@
 import { Schema, model, models, Model } from "mongoose";
+import { User } from "../../models/User";
 import { ExameSchema } from "./Exame";
 
-export interface IUserModel {
-    cpf: String;
-    nome: String;
-    nascimento: Date;
-    altura: Number;
-    exames: [];
-    email: String;
-    foto: String;
-}
 
-const UserSchema = new Schema<IUserModel>(
-    {
-        cpf: { type: String, required: true, unique: true },
-        nome: { type: String, required: true },
-        nascimento: { type: Date, required: true },
-        altura: { type: Number, required: true },
-        exames: [ExameSchema],
-        email: String,
-        foto: String,
-    },
-    {
-        methods: {
-            toBaseForm() {},
-        },
-    }
-);
+const UserSchema = new Schema<User>({
+    cpf: { type: String, required: true, unique: true },
+    nome: { type: String, required: true },
+    nascimento: { type: Date, required: true },
+    altura: { type: Number, required: true },
+    exames: [ExameSchema],
+    email: String,
+    foto: String,
+});
 
-export default (models.User as Model<IUserModel>) || model("User", UserSchema);
+export default (models.User as Model<User>) || model("User", UserSchema);
