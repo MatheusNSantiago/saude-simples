@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { User } from "../../models/User";
 import UserModel from "../../server/models/User";
 import { connectMongo } from "../../server/connectMongo";
 

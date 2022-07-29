@@ -4,10 +4,7 @@ import {
     VStack,
     Button,
     Checkbox,
-    Input,
     Text,
-    InputGroup,
-    InputLeftElement,
     useToast,
     Link,
 } from "@chakra-ui/react";
@@ -33,6 +30,8 @@ const Login: NextPage = () => {
         axios
             .get("/api/getUser", { params: { cpf: cpf } })
             .then((value) => {
+                console.log(value.data);
+
                 dispatch(setUser(value.data));
 
                 router.push("/");
