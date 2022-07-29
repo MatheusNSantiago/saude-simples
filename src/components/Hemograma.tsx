@@ -21,7 +21,7 @@ import { Exame } from "../models/Exame";
 import { User } from "../models/User";
 import HeadingDetalhes from "./HeadingDetalhes";
 
-export default function ({ user }: { user: User }) {
+function Hemograma({ user }: { user: User }) {
     const exames = user.exames.filter(({ group }) => group == "hemograma");
 
     return (
@@ -179,3 +179,4 @@ function FaixaDeReferencia({ value, faixa }: FaixaDeReferenciaProps) {
         </Slider>
     );
 }
+export default Hemograma;

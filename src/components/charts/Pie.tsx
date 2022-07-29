@@ -19,7 +19,7 @@ type PieProps = {
     props?: BoxProps;
 };
 
-export default function ({ data, labels, props }: PieProps) {
+function PieChart({ data, labels, props }: PieProps) {
     /*     let ref = React.useRef<ChartJS<"pie">>(null);
     const [chart, setChart] = React.useState(ref.current);
 
@@ -124,3 +124,4 @@ export default function ({ data, labels, props }: PieProps) {
         </Box>
     );
 }
+export default PieChart;

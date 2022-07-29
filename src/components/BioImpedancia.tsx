@@ -15,7 +15,7 @@ import Pie from "./charts/Pie";
 import HeadingDetalhes from "./HeadingDetalhes";
 import { User } from "../models/User";
 
-export default function ({ user }: { user: User }) {
+function BioImpedancia({ user }: { user: User }) {
     var { exames, altura } = user;
 
     exames = exames.filter((exame) => exame.group == "bio-impedancia");
@@ -48,6 +48,8 @@ export default function ({ user }: { user: User }) {
         </Box>
     );
 }
+
+export default BioImpedancia;
 
 function Data({
     labels,
