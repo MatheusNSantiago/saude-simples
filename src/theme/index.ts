@@ -15,8 +15,23 @@ const inputSelectStyles: ComponentStyleConfig = {
         },
     },
     sizes: {
-        md: {
-            field: { borderRadius: "none" },
+        // md: { field: { borderRadius: "none" } },
+    },
+};
+
+const Tabs: ComponentStyleConfig = {
+    parts: ["tab"],
+    // The styles all button have in common
+    variants: {
+        line: {
+            tab: {
+                _selected: {
+                    borderBottomWidth: 2,
+                    borderBottomColor: "primary.500",
+                    color: "black",
+                },
+                _hover: { bg: "gray.50" },
+            },
         },
     },
 };
@@ -43,9 +58,10 @@ const theme = extendTheme(
             // body: `Monospace, ${base.fonts.body}`,
         },
         components: {
+            // Button: Tab,
+            Tabs,
             Input: inputSelectStyles,
-            Select: inputSelectStyles,
-            Tab: inputSelectStyles,
+            // Select: inputSelectStyles,
         },
     },
     withDefaultColorScheme({
