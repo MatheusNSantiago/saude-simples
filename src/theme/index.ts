@@ -36,6 +36,13 @@ const Tabs: ComponentStyleConfig = {
     },
 };
 
+const Link: ComponentStyleConfig = {
+    baseStyle: {
+        color: "primary.600",
+        fontWeight: "bold"
+    },
+};
+
 const theme = extendTheme(
     {
         colors: {
@@ -61,6 +68,8 @@ const theme = extendTheme(
             // Button: Tab,
             Tabs,
             Input: inputSelectStyles,
+            Link,
+
             // Select: inputSelectStyles,
         },
     },
