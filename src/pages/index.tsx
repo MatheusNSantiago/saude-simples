@@ -25,19 +25,20 @@ import Overview from "./overview";
 
 const Home = () => {
     const router = useRouter();
-    const user = useAppSelector(selectUser);
+    // const user = useAppSelector(selectUser);
+    const user = User.getFakeUser();
 
-    useEffect(() => {
-        if (!user) router.push("/login");
-    }, []);
+    // useEffect(() => {
+    //     if (!user) router.push("/login");
+    // }, []);
 
-    if (!user) {
-        return (
-            <Center h="100vh">
-                <CircularProgress isIndeterminate color="primary.500" />
-            </Center>
-        );
-    }
+    // if (!user) {
+    //     return (
+    //         <Center h="100vh">
+    //             <CircularProgress isIndeterminate color="primary.500" />
+    //         </Center>
+    //     );
+    // }
 
     return (
         <Box bg="gray.50" h={"100vh"}>
@@ -67,13 +68,10 @@ const Home = () => {
                     <Button onClick={() => console.log(user)}></Button>
                     {/* <DebugUser /> */}
                 </HStack>
-
                 <Tabs isFitted>
-                    <TabList bg={"white"} shadow="lg">
+                    <TabList shadow="lg">
                         <Tab>Tela 1</Tab>
                         <Tab>Tela 2</Tab>
-                        {/* <Tab _selected={tabStyle}>Tela 1</Tab> */}
-                        {/* <Tab _selected={tabStyle}>Tela 2</Tab> */}
                     </TabList>
                     <TabPanels>
                         <TabPanel p={0}>
