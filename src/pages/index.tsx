@@ -13,12 +13,14 @@ import {
     Container,
     VStack,
     Box,
+    IconButton,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import Overview from "./overview";
+import { FaPlus } from "react-icons/fa";
 
 const Home = () => {
     const router = useRouter();
@@ -37,10 +39,9 @@ const Home = () => {
     }
 
     return (
-        <Box bg="gray.50" h={"100vh"}>
+        <Box bg="gray.50" minH={"100vh"}>
             <Container
                 size={"lg"}
-                boxSize={"full"}
                 p={0}
                 py={5}
                 bgColor="white"
