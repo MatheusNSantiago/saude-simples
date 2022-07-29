@@ -1,13 +1,13 @@
 import * as examesInfo from "../exames.json";
 
 export type ExameGroup = keyof typeof examesInfo;
-type ExameName<Group extends ExameGroup> = keyof typeof examesInfo[Group];
+export type ExameName<Group extends ExameGroup> = Group extends ExameGroup
+    ? keyof typeof examesInfo[Group]
+    : ExameName<ExameGroup>
 
 export class Exame<
     Group extends ExameGroup = ExameGroup,
-    Name extends ExameName<Group> = ExameName<Group> extends never
-        ? any
-        : ExameName<Group>
+    Name extends ExameName<Group> = ExameName<Group>
 > {
     group: Group;
     name: Name;
@@ -21,11 +21,11 @@ export class Exame<
         this.date = date;
     }
 
-    public get faixa() {
-        return (examesInfo[this.group][this.name] as any).faixa;
+    public get faixa(): [min: number, max: number] {
+        return (examesInfo as any)[this.group][this.name].faixa;
     }
 
     public get unidade() {
-        return (examesInfo[this.group][this.name] as any).unidade;
+        return (examesInfo as any)[this.group][this.name].unidade;
     }
 }
