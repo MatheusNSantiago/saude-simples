@@ -1,4 +1,4 @@
-import * as examesInfo from "../exames.json"
+import * as examesInfo from "../exames.json";
 
 export type ExameGroup = keyof typeof examesInfo;
 type ExameName<Group extends ExameGroup> = keyof typeof examesInfo[Group];
@@ -27,14 +27,5 @@ export class Exame<
 
     public get unidade() {
         return (examesInfo[this.group][this.name] as any).unidade;
-    }
-
-    toJson() {
-        return {
-            group: this.group,
-            name: this.name,
-            value: this.value,
-            date: this.date,
-        };
     }
 }

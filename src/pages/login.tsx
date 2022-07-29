@@ -31,6 +31,7 @@ const Login: NextPage = () => {
             .get("/api/getUser", { params: { cpf: cpf } })
             .then((value) => {
                 dispatch(setUser(value.data));
+                
 
                 router.push("/");
             })
