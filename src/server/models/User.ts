@@ -1,9 +1,17 @@
 import { Schema, model, models, Model } from "mongoose";
-import { User } from "../../models/User";
-import { ExameSchema } from "./Exame";
+import { ExameSchema, IExame } from "./Exame";
 
+export interface IUser {
+    cpf: string;
+    nome: string;
+    nascimento:Date ;
+    altura: number;
+    exames: [IExame];
+    email: string;
+    foto: string;
+}
 
-const UserSchema = new Schema<User>({
+const UserSchema = new Schema<IUser>({
     cpf: { type: String, required: true, unique: true },
     nome: { type: String, required: true },
     nascimento: { type: Date, required: true },
@@ -13,4 +21,4 @@ const UserSchema = new Schema<User>({
     foto: String,
 });
 
-export default (models.User as Model<User>) || model("User", UserSchema);
+export default (models.User as Model<IUser>) || model("User", UserSchema);
