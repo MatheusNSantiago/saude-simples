@@ -31,7 +31,9 @@ const CustomInput = ({
             {formLabel && <FormLabel>{formLabel}</FormLabel>}
             <InputGroup>
                 {icon && (
-                    <InputLeftElement pointerEvents="none" children={icon} />
+                    <InputLeftElement pointerEvents="none">
+                        icon
+                    </InputLeftElement>
                 )}
                 <Input
                     type={type}

@@ -28,7 +28,7 @@ const Home = () => {
 
     useEffect(() => {
         if (!user) router.push("/login");
-    }, []);
+    });
 
     if (!user) {
         return (
@@ -40,14 +40,14 @@ const Home = () => {
 
     return (
         <Box bg="gray.50" minH={"100vh"}>
-            <Container
-                size={"lg"}
-                p={0}
-                py={5}
-                bgColor="white"
-            >
+            <Container size={"lg"} p={0} py={5} bgColor="white">
                 <HStack mx={10}>
-                    <Image src={user.foto ?? ""} height={16} rounded={14} />
+                    <Image
+                        src={user.foto ?? ""}
+                        alt="Profile Picture"
+                        height={16}
+                        rounded={14}
+                    />
                     <VStack
                         w="full"
                         pl={5}

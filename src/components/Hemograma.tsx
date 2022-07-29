@@ -76,7 +76,7 @@ function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
                     >
                         <HStack w="full" align={"end"}>
                             <Heading size="md">{title}</Heading>
-                            <Image src={iconSrc} w={8} />
+                            <Image src={iconSrc} alt="" w={8} />
                             <Spacer />
                             <AccordionIcon />
                         </HStack>
