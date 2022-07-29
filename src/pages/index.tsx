@@ -74,6 +74,19 @@ const Home = () => {
                         <TabPanel>{/* <Pagina2 /> */}</TabPanel>
                     </TabPanels>
                 </Tabs>
+                <Container pos="fixed" bottom={10}>
+                    <IconButton
+                        aria-label="Adicionar Exames"
+                        icon={<FaPlus />}
+                        pos="absolute"
+                        right={10}
+                        bottom={4}
+                        transform="auto"
+                        scale={2}
+                        rounded="full"
+                        shadow="2px 2px 3px rgba(0, 0, 0, 0.25)"
+                    />
+                </Container>
             </Container>
         </Box>
     );
