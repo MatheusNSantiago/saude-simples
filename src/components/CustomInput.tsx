@@ -32,7 +32,7 @@ const CustomInput = ({
             <InputGroup>
                 {icon && (
                     <InputLeftElement pointerEvents="none">
-                        icon
+                        {icon}
                     </InputLeftElement>
                 )}
                 <Input
