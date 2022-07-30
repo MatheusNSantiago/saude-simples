@@ -25,12 +25,13 @@ const Login: NextPage = () => {
 
     const [cpf, setCpf] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     async function onSubmit() {
         axios
             .get("/api/getUser", { params: { cpf: cpf } })
             .then((value) => {
-                console.log(value.data);
+                setIsLoading(true);
 
                 dispatch(setUser(value.data));
 
@@ -67,7 +68,12 @@ const Login: NextPage = () => {
                         isDisabled
                     />
                     <Checkbox>Continuar conectado?</Checkbox>
-                    <Button type="submit" width="full" onClick={onSubmit}>
+                    <Button
+                        type="submit"
+                        width="full"
+                        onClick={onSubmit}
+                        isLoading={isLoading}
+                    >
                         Entrar
                     </Button>
                     <Text>

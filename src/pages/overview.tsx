@@ -15,7 +15,7 @@ const Overview = () => {
     const user = User.getFakeUser();
 
     return (
-        <VStack alignItems="flex-start" width="full" px={10} pt={6} spacing={6}>
+        <VStack alignItems="flex-start" width="full" px={8} pt={6} spacing={6}>
             <Heading size="xl">Visão Geral</Heading>
             <BioImpedancia user={user} />
             <Hemograma user={user} />
