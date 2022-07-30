@@ -3,3 +3,9 @@
 .hide-scroll::-webkit-scrollbar {
     display: none;
 }
+
+
+body{
+
+    overflow-y: scroll;
+}
