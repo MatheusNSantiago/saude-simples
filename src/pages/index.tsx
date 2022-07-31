@@ -3,8 +3,6 @@ import {
     CircularProgress,
     HStack,
     Text,
-    Image,
-    Button,
     TabPanel,
     Tabs,
     Tab,
@@ -15,21 +13,16 @@ import {
     Box,
     IconButton,
     Icon,
+    Avatar,
 } from "@chakra-ui/react";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import Overview from "./overview";
-import {
-    BsArchive,
-    BsFileBarGraph,
-    BsHouseDoor,
-} from "react-icons/bs";
-import {
-    AiOutlineFileAdd,
-    AiOutlineUser,
-} from "react-icons/ai";
+import { BsArchive, BsBell, BsFileBarGraph, BsHouseDoor } from "react-icons/bs";
+import {AiOutlineUser } from "react-icons/ai";
+import AdicionarExames from "./adicionarExames";
 
 const Home = () => {
     const router = useRouter();
@@ -50,27 +43,27 @@ const Home = () => {
 
     return (
         <Box bg="gray.50" minH={"100vh"}>
-            <Container size={"lg"} p={0} py={5} bgColor="white">
-                <HStack mx={10}>
-                    <Image
-                        src={user.foto ?? ""}
-                        alt="Profile Picture"
-                        height={16}
-                        rounded={14}
-                    />
+            <Container size={"lg"} p={0} bgColor="white">
+                <HStack p={8} shadow="sm">
+                    <Avatar src={user.foto ?? ""} boxSize={16} />
                     <VStack
                         w="full"
-                        pl={5}
+                        pl={2}
                         alignItems="flex-start"
                         justify={"center"}
-                        spacing={1.5}
+                        spacing={1}
                     >
-                        <Text fontWeight={"bold"} fontSize={"xl"} m={0}>
+                        <Text fontWeight={"bold"} fontSize={"xl"}>
                             {user.nome}
                         </Text>
                         <Text fontSize={"sm"}>{user.idade} anos</Text>
                     </VStack>
-                    <Button onClick={() => console.log(user)}></Button>
+                    <IconButton
+                        aria-label=""
+                        variant={"outline"}
+                        icon={<BsBell />}
+                        onClick={() => console.log(user)}
+                    />
                 </HStack>
                 <Tabs
                     variant={"unstyled"}
@@ -81,11 +74,12 @@ const Home = () => {
                         <TabPanel p={0}>
                             <Overview />
                         </TabPanel>
-                        <TabPanel>{/* <Pagina2 /> */}</TabPanel>
                     </TabPanels>
+                    <Box h={20} />
                     <Container
                         pos="fixed"
                         bottom={0}
+                        px={0}
                         shadow="0 -8px 4px -4px rgba(0, 0, 0, 0.15)"
                         size="lg"
                         zIndex="overlay"
@@ -95,31 +89,21 @@ const Home = () => {
                             display="flex"
                             flexDirection={"row"}
                             justifyContent="space-around"
+                            w="100%"
                         >
-                            <IconButton
-                                aria-label="Adicionar Exames"
-                                icon={<AiOutlineFileAdd size={20.75} />}
-                                pos="absolute"
-                                transform="auto"
-                                margin={"auto"}
-                                top={-4}
-                                scale={1.5}
-                                rounded="full"
-                                border={"1.5px solid white"}
-                                shadow="2px 2px 3px rgba(0, 0, 0, 0.25)"
-                            />
+                            <AdicionarExames />
                             <CustomTab
                                 label="Geral"
                                 icon={BsHouseDoor}
                                 isSelected={index === 0}
                             />
                             <CustomTab
-                                label="Geral"
+                                label="Arquivados"
                                 icon={BsArchive}
                                 isSelected={index === 1}
                             />
                             <CustomTab
-                                label="Geral"
+                                label="Resultados"
                                 icon={BsFileBarGraph}
                                 isSelected={index === 2}
                             />
