@@ -1,4 +1,13 @@
-import { Box, BoxProps, Circle, HStack, VStack, Text } from "@chakra-ui/react";
+import {
+    Box,
+    BoxProps,
+    Circle,
+    HStack,
+    VStack,
+    Text,
+    useMediaQuery,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -20,6 +29,8 @@ type PieProps = {
 };
 
 function PieChart({ data, labels, props }: PieProps) {
+    const offset = useBreakpointValue({ base: -4, sm: 4 } );
+    /* Ver se isso aqui faz sentido de botar */
     /*     let ref = React.useRef<ChartJS<"pie">>(null);
     const [chart, setChart] = React.useState(ref.current);
 
@@ -77,6 +88,7 @@ function PieChart({ data, labels, props }: PieProps) {
                 color: "black",
                 anchor: "end",
                 align: "start",
+                offset: offset,
             },
             tooltip: {
                 yAlign: "bottom",
@@ -115,11 +127,9 @@ function PieChart({ data, labels, props }: PieProps) {
                     bottom: "47.5%",
                     transform: "translateY(50%)",
                 }}
-                width="100%"
                 data={_data}
                 options={options}
                 plugins={[ChartDataLabels]}
-                // ref={ref}
             />
         </Box>
     );

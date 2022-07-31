@@ -21,12 +21,14 @@ import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import Overview from "./overview";
 import { BsArchive, BsBell, BsFileBarGraph, BsHouseDoor } from "react-icons/bs";
-import {AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import AdicionarExames from "./adicionarExames";
+import { User } from "../models/User";
 
 const Home = () => {
     const router = useRouter();
-    const user = useAppSelector(selectUser);
+    // const user = useAppSelector(selectUser);
+    const user = User.getFakeUser();
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
@@ -70,7 +72,7 @@ const Home = () => {
                     index={index}
                     onChange={(newIndex) => setIndex(newIndex)}
                 >
-                    <TabPanels>
+                    <TabPanels px={8}>
                         <TabPanel p={0}>
                             <Overview />
                         </TabPanel>

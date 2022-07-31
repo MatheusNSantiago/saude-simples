@@ -1,12 +1,20 @@
-import { Button, Heading, HStack, Spacer, Text, Icon, Box } from "@chakra-ui/react";
+import {
+    Button,
+    Heading,
+    HStack,
+    Text,
+    Icon,
+    Box,
+} from "@chakra-ui/react";
 import { FaAngleRight } from "react-icons/fa";
 
 const HeadingDetalhes = ({ title }: { title: string }) => {
     return (
         <Box mb={2.5}>
-            <HStack w="full" align={"baseline"}>
-                <Heading size="lg">{title}</Heading>
-                <Spacer />
+            <HStack w="full" justify={"space-between"} align={"baseline"}>
+                <Heading fontSize={{ base: "22", sm: "x-large" }}>
+                    {title}
+                </Heading>
                 <Button colorScheme="whiteAlpha" variant="ghost">
                     <Text fontWeight="medium" color="blackAlpha.900">
                         Mais Detalhes

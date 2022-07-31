@@ -75,7 +75,7 @@ function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
                         _hover={{ bg: "transparent" }}
                     >
                         <HStack w="full" align={"end"}>
-                            <Heading size="md">{title}</Heading>
+                            <Heading fontSize={"larger"}>{title}</Heading>
                             <Image src={iconSrc} alt="" w={8} />
                             <Spacer />
                             <AccordionIcon />

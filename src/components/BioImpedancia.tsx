@@ -38,8 +38,6 @@ function BioImpedancia({ user }: { user: User }) {
                         props={{
                             flex: 0.9,
                             pt: 4,
-                            rounded: "md",
-                            alignSelf: "stretch",
                             shadow: "-6px 0px 4px -3.5px rgba(0, 0, 0, 0.25)",
                         }}
                     />
