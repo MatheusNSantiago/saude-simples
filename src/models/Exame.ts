@@ -14,7 +14,7 @@ export class Exame<
     value: number;
     date: Date;
 
-    constructor(group: Group, name: Name, value: number, date: Date) {
+    constructor(group: Group, name: Name, value: number, date = new Date()) {
         this.group = group;
         this.name = name;
         this.value = value;

@@ -8,6 +8,11 @@ import {
 
 const inputSelectStyles: ComponentStyleConfig = {
     variants: {
+        outline: {
+            field: {
+                _focus: { borderColor: "primary.400" },
+            },
+        },
         filled: {
             field: {
                 _focus: { borderColor: "primary.500" },
@@ -39,7 +44,7 @@ const Tabs: ComponentStyleConfig = {
 const Link: ComponentStyleConfig = {
     baseStyle: {
         color: "primary.600",
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
 };
 
@@ -70,7 +75,7 @@ const theme = extendTheme(
             Input: inputSelectStyles,
             Link,
 
-            // Select: inputSelectStyles,
+            Select: inputSelectStyles,
         },
     },
     withDefaultColorScheme({

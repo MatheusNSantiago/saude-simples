@@ -22,10 +22,15 @@ import CustomInput from "../components/CustomInput";
 import { hex2rgba } from "../utils";
 import examesInfo from "../exames.json";
 import { MouseEventHandler, useState } from "react";
-import { Exame, ExameGroup, ExameName } from "../models/Exame";
+import { ExameGroup } from "../models/Exame";
 
 const AdicionarExames = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
+    const [entries, setEntries] = useState<ExameEntry[]>([]);
+
+    const onSave = () => {};
+
     return (
         <>
             <IconButton
@@ -51,7 +56,79 @@ const AdicionarExames = () => {
                 <ModalContent>
                     <ModalHeader fontSize={"3xl"}>Cadastrar Exames</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBodyForm />
+                    <ModalBody display={"grid"} rowGap={3}>
+                        <Heading size={"md"}>Tipo do Exame</Heading>
+                        <HStack overflowX={"auto"} className="hide-scroll">
+                            <Card
+                                label="Bio Impedância"
+                                imgSrc="bio-impedancia.svg"
+                                bgColor="#ffc61b"
+                                onClick={() => setExameGroup("bio-impedancia")}
+                            />
+                            <Card
+                                label="Sangue"
+                                imgSrc="blood.svg"
+                                bgColor="#fa6e51"
+                                onClick={() => setExameGroup("hemograma")}
+                            />
+                            <Card
+                                label="Sangue"
+                                imgSrc="blood.svg"
+                                onClick={() => {}}
+                            />
+                            <Card
+                                label="Sangue"
+                                imgSrc="blood.svg"
+                                onClick={() => {}}
+                            />
+                        </HStack>
+                        <Divider mt="3" />
+                        {Object.entries(examesInfo[exameGroup]).map(
+                            ([exameName, { unidade }]) => {
+                                const entry = entries.find(
+                                    ({ nome }) => nome === exameName
+                                );
+
+                                return (
+                                    <CustomInput
+                                        label={exameName}
+                                        rightElement={unidade}
+                                        value={entry?.valor.toString()}
+                                        type="number"
+                                        onChange={(v: number) => {
+                                            if (!entry) {
+                                                setEntries([
+                                                    ...entries,
+                                                    {
+                                                        nome: exameName,
+                                                        valor: v,
+                                                    },
+                                                ]);
+                                            } else {
+                                                setEntries(
+                                                    entries.map(
+                                                        (entry): ExameEntry => {
+                                                            if (
+                                                                entry.nome ===
+                                                                exameName
+                                                            ) {
+                                                                return {
+                                                                    nome: entry.nome,
+                                                                    valor: v,
+                                                                };
+                                                            }
+                                                            return entry;
+                                                        }
+                                                    )
+                                                );
+                                            }
+                                        }}
+                                        key={exameName}
+                                    />
+                                );
+                            }
+                        )}
+                    </ModalBody>
                     <ModalFooter>
                         <Button w="full">Salvar</Button>
                     </ModalFooter>
@@ -60,8 +137,9 @@ const AdicionarExames = () => {
         </>
     );
 };
-
 export default AdicionarExames;
+
+type ExameEntry = { nome: string; valor: number };
 
 type CardProps = {
     label: string;
@@ -121,71 +199,3 @@ const Card = ({
         </Box>
     );
 };
-
-function ModalBodyForm({}) {
-    const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
-
-    const [entries, setEntries] = useState<{ nome: string; valor: number }[]>(
-        []
-    );
-
-    return (
-        <ModalBody display={"grid"} rowGap={3}>
-            <Heading size={"md"}>Tipo do Exame</Heading>
-            <HStack overflowX={"auto"} className="hide-scroll">
-                <Card
-                    label="Bio Impedância"
-                    imgSrc="bio-impedancia.svg"
-                    bgColor="#ffc61b"
-                    onClick={() => setExameGroup("bio-impedancia")}
-                />
-                <Card
-                    label="Sangue"
-                    imgSrc="blood.svg"
-                    bgColor="#fa6e51"
-                    onClick={() => setExameGroup("hemograma")}
-                />
-                <Card label="Sangue" imgSrc="blood.svg" onClick={() => {}} />
-                <Card label="Sangue" imgSrc="blood.svg" onClick={() => {}} />
-            </HStack>
-            <Divider mt="3" />
-            {Object.entries(examesInfo[exameGroup]).map(
-                ([exameName, { unidade }]) => {
-                    const entry = entries.find(
-                        ({ nome }) => nome === exameName
-                    );
-
-                    return (
-                        <CustomInput
-                            label={exameName}
-                            rightElement={unidade}
-                            value={entry?.valor.toString()}
-                            type="number"
-                            onChange={(v: number) => {
-                                if (!entry) {
-                                    setEntries([
-                                        ...entries,
-                                        { nome: exameName, valor: v },
-                                    ]);
-                                } else {
-                                    setEntries(
-                                        entries.map((entry) => {
-                                            if (entry.nome === exameName) {
-                                                return {
-                                                    nome: entry.nome,
-                                                    valor: v,
-                                                };
-                                            }
-                                            return entry;
-                                        })
-                                    );
-                                }
-                            }}
-                            key={exameName}
-                        />
-                    );
-                }
-            )}
-        </ModalBody>
-    );
-}

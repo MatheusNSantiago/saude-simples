@@ -23,12 +23,10 @@ import Overview from "./overview";
 import { BsArchive, BsBell, BsFileBarGraph, BsHouseDoor } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 import AdicionarExames from "./adicionarExames";
-import { User } from "../models/User";
 
 const Home = () => {
     const router = useRouter();
-    // const user = useAppSelector(selectUser);
-    const user = User.getFakeUser();
+    const user = useAppSelector(selectUser);
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
