@@ -76,32 +76,41 @@ const Card = ({
     imgSrc,
     bgColor = "#ffc61b",
     onClick,
-    size = 24,
+    size = 28,
 }: CardProps) => {
+    const getBgGradient = (opacity1: number, opacity2: number) =>
+        `linear(-45deg, ${hex2rgba(bgColor!, opacity1)}, ${hex2rgba(
+            bgColor!,
+            opacity2
+        )})`;
     return (
-        <Box boxSize={size + 4} transform="auto" shadow={"lg"}>
+        <Box boxSize={size} transform="auto" shadow={"lg"}>
             <Button
                 whiteSpace={"normal"}
-                colorScheme="gray"
+                variant={"outline"}
                 onClick={onClick}
+                px={2}
                 pt="4"
-                width={size}
-                height={size + 4}
-                bgGradient={`linear(-45deg, ${bgColor}, ${hex2rgba(
-                    bgColor!,
-                    0.75
-                )})`}
-                _hover={{ bgColor: bgColor }}
+                boxSize={size}
+                borderColor={hex2rgba(bgColor!, 0.6)}
+                _hover={{ bgGradient: getBgGradient(0.15, 0.2) }}
+                _active={{ bgGradient: getBgGradient(0.4, 0.5) }}
             >
                 <VStack boxSize="full">
                     <Image
                         alt={label}
-                        w="65%"
+                        w="50%"
                         shadow="2px 2px 4px rgba(0, 0, 0, 0.25)"
                         rounded="full"
                         src={imgSrc}
                     />
-                    <Text color="white" fontWeight={"bold"}>
+                    <Text
+                        color="black"
+                        w="full"
+                        fontSize={"sm"}
+                        fontWeight={"normal"}
+                        fontFamily="mono"
+                    >
                         {label}
                     </Text>
                 </VStack>
