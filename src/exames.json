@@ -1,8 +1,8 @@
 {
     "bio-impedancia": {
-        "Massa Magra": { "faixa": [10, 20], "unidade": "KG" },
-        "Massa Gorda": { "faixa": [20, 30], "unidade": "KG" },
-        "Massa Muscular": { "faixa": [10, 20], "unidade": "KG" }
+        "Massa Magra": { "faixa": [10, 20], "unidade": "kg" },
+        "Massa Gorda": { "faixa": [20, 30], "unidade": "kg" },
+        "Massa Muscular": { "faixa": [10, 20], "unidade": "kg" }
     },
     "hemograma": {
         "Hemácias": { "faixa": [4.5, 6.1], "unidade": "milhões/µL" },

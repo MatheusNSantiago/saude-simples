@@ -62,7 +62,7 @@ const Signup = () => {
                     />
                     <CustomInput placeholder="CPF" onChange={setCpf} />
                     <CustomInput
-                        formLabel="Data de Nascimento"
+                        label="Data de Nascimento"
                         type={"date"}
                         onChange={setNascimento}
                     />
