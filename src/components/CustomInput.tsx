@@ -31,14 +31,13 @@ const CustomInput = ({
 }: CustomInputProps) => {
     return (
         <FormControl isDisabled={isDisabled} isRequired={isRequired}>
-            {label && <FormLabel fontFamily={"monospace"} children={label} />}
+            {label && <FormLabel fontFamily={"monospace"}>{label}</FormLabel>}
 
             <InputGroup>
                 {leftElement && (
-                    <InputLeftElement
-                        pointerEvents="none"
-                        children={leftElement}
-                    />
+                    <InputLeftElement pointerEvents="none">
+                        {leftElement}
+                    </InputLeftElement>
                 )}
                 <Input
                     type={type}
@@ -52,8 +51,9 @@ const CustomInput = ({
                         fontSize={"sm"}
                         fontFamily={"monospace"}
                         pointerEvents="none"
-                        children={rightElement}
-                    />
+                    >
+                        {rightElement}
+                    </InputRightAddon>
                 )}
             </InputGroup>
         </FormControl>

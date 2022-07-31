@@ -101,7 +101,9 @@ const Card = ({
                         rounded="full"
                         src={imgSrc}
                     />
-                    <Text color="white" fontWeight={"bold"} children={label} />
+                    <Text color="white" fontWeight={"bold"}>
+                        {label}
+                    </Text>
                 </VStack>
             </Button>
         </Box>
@@ -132,12 +134,13 @@ function ModalBodyForm({}) {
             </HStack>
             <Divider mt="3" />
             {Object.entries(examesInfo[exameGroup]).map(
-                ([nomeExame, { unidade }]) => {
+                ([nomeExame, { unidade }], idx) => {
                     return (
                         <CustomInput
                             label={nomeExame}
                             rightElement={unidade}
                             onChange={() => {}}
+                            key={idx}
                         />
                     );
                 }
