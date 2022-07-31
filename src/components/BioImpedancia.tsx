@@ -51,15 +51,13 @@ function BioImpedancia({ user }: { user: User }) {
 
 export default BioImpedancia;
 
-function Data({
-    labels,
-    values,
-    userAltura,
-}: {
+type DataProps = {
     labels: string[];
     values: number[];
     userAltura: number;
-}) {
+};
+
+function Data({ labels, values, userAltura }: DataProps) {
     const calcularIMC = () => {
         const peso = values.reduce((acc, curr) => acc + curr, 0);
         const altura = userAltura / 100;
@@ -84,17 +82,23 @@ function Data({
                 return (
                     <Box key={index} w="full">
                         <HStack justify={"start"} spacing={0}>
-                            <Text fontSize={"sm"}>{label}:</Text>
+                            <Text fontSize={["smaller", "sm"]}>{label}:</Text>
 
                             <Spacer />
-                            <Text fontSize={"sm"}>{values[index]}kg</Text>
+                            <Text fontSize={["smaller", "sm"]}>
+                                {values[index]}kg
+                            </Text>
                             <Box w="1" />
                             <Icon
                                 as={rand < 0 ? AiFillCaretDown : AiFillCaretUp}
                                 color="gray.500"
+                                boxSize={[3, 4]}
                             />
 
-                            <Text fontSize={"sm"} suppressHydrationWarning>
+                            <Text
+                                fontSize={["smaller", "sm"]}
+                                suppressHydrationWarning
+                            >
                                 {Math.abs(rand).toFixed(0)}%
                             </Text>
                         </HStack>
