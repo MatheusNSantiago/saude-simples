@@ -22,7 +22,7 @@ import CustomInput from "../components/CustomInput";
 import { hex2rgba } from "../utils";
 import examesInfo from "../exames.json";
 import { MouseEventHandler, useState } from "react";
-import { ExameGroup } from "../models/Exame";
+import { Exame, ExameGroup, ExameName } from "../models/Exame";
 
 const AdicionarExames = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,7 +49,7 @@ const AdicionarExames = () => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader fontSize={"3xl"}>Cadastrar Exame</ModalHeader>
+                    <ModalHeader fontSize={"3xl"}>Cadastrar Exames</ModalHeader>
                     <ModalCloseButton />
                     <ModalBodyForm />
                     <ModalFooter>
@@ -94,7 +94,10 @@ const Card = ({
                 boxSize={size}
                 borderColor={hex2rgba(bgColor!, 0.6)}
                 _hover={{ bgGradient: getBgGradient(0.15, 0.2) }}
-                _active={{ bgGradient: getBgGradient(0.4, 0.5) }}
+                _active={{
+                    bgGradient: getBgGradient(0.3, 0.4),
+                    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                }}
             >
                 <VStack boxSize="full">
                     <Image
@@ -122,6 +125,10 @@ const Card = ({
 function ModalBodyForm({}) {
     const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
 
+    const [entries, setEntries] = useState<{ nome: string; valor: number }[]>(
+        []
+    );
+
     return (
         <ModalBody display={"grid"} rowGap={3}>
             <Heading size={"md"}>Tipo do Exame</Heading>
@@ -143,13 +150,38 @@ function ModalBodyForm({}) {
             </HStack>
             <Divider mt="3" />
             {Object.entries(examesInfo[exameGroup]).map(
-                ([nomeExame, { unidade }], idx) => {
+                ([exameName, { unidade }]) => {
+                    const entry = entries.find(
+                        ({ nome }) => nome === exameName
+                    );
+
                     return (
                         <CustomInput
-                            label={nomeExame}
+                            label={exameName}
                             rightElement={unidade}
-                            onChange={() => {}}
-                            key={idx}
+                            value={entry?.valor.toString()}
+                            type="number"
+                            onChange={(v: number) => {
+                                if (!entry) {
+                                    setEntries([
+                                        ...entries,
+                                        { nome: exameName, valor: v },
+                                    ]);
+                                } else {
+                                    setEntries(
+                                        entries.map((entry) => {
+                                            if (entry.nome === exameName) {
+                                                return {
+                                                    nome: entry.nome,
+                                                    valor: v,
+                                                };
+                                            }
+                                            return entry;
+                                        })
+                                    );
+                                }
+                            }}
+                            key={exameName}
                         />
                     );
                 }

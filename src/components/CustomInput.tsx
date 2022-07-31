@@ -12,6 +12,7 @@ type CustomInputProps = {
     onChange: CallableFunction;
     placeholder?: string;
     type?: React.HTMLInputTypeAttribute;
+    value?: string;
     leftElement?: ReactNode;
     rightElement?: ReactNode | string;
     label?: string;
@@ -24,6 +25,7 @@ const CustomInput = ({
     onChange,
     type = "text",
     leftElement,
+    value,
     rightElement,
     label,
     isRequired = false,
@@ -42,6 +44,7 @@ const CustomInput = ({
                 <Input
                     type={type}
                     variant="outline"
+                    value={value}
                     placeholder={placeholder}
                     onChange={(e) => onChange(e.target.value)}
                 />
@@ -49,6 +52,9 @@ const CustomInput = ({
                     <InputRightAddon
                         bg="blackAlpha.100"
                         fontSize={"sm"}
+                        minW={16}
+                        p={1}
+                        justifyContent={"center"}
                         fontFamily={"monospace"}
                         pointerEvents="none"
                     >
