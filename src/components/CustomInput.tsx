@@ -4,6 +4,7 @@ import {
     InputGroup,
     InputLeftElement,
     FormControl,
+    InputRightAddon,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
@@ -11,8 +12,9 @@ type CustomInputProps = {
     onChange: CallableFunction;
     placeholder?: string;
     type?: React.HTMLInputTypeAttribute;
-    icon?: ReactNode;
-    formLabel?: string;
+    leftElement?: ReactNode;
+    rightElement?: ReactNode | string;
+    label?: string;
     isRequired?: boolean;
     isDisabled?: boolean;
 };
@@ -21,25 +23,38 @@ const CustomInput = ({
     placeholder,
     onChange,
     type = "text",
-    icon,
-    formLabel,
+    leftElement,
+    rightElement,
+    label,
     isRequired = false,
     isDisabled = false,
 }: CustomInputProps) => {
     return (
         <FormControl isDisabled={isDisabled} isRequired={isRequired}>
-            {formLabel && <FormLabel>{formLabel}</FormLabel>}
+            {label && <FormLabel fontFamily={"monospace"} children={label} />}
+
             <InputGroup>
-                {icon && (
-                    <InputLeftElement pointerEvents="none">
-                        {icon}
-                    </InputLeftElement>
+                {leftElement && (
+                    <InputLeftElement
+                        pointerEvents="none"
+                        children={leftElement}
+                    />
                 )}
                 <Input
                     type={type}
+                    variant="outline"
                     placeholder={placeholder}
                     onChange={(e) => onChange(e.target.value)}
                 />
+                {rightElement && (
+                    <InputRightAddon
+                        bg="blackAlpha.100"
+                        fontSize={"sm"}
+                        fontFamily={"monospace"}
+                        pointerEvents="none"
+                        children={rightElement}
+                    />
+                )}
             </InputGroup>
         </FormControl>
     );

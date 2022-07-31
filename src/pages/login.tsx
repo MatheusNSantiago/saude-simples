@@ -58,13 +58,13 @@ const Login: NextPage = () => {
                         placeholder="CPF"
                         onChange={setCpf}
                         type={"number"}
-                        icon={<FaRegIdCard />}
+                        leftElement={<FaRegIdCard />}
                     />
                     <CustomInput
                         placeholder="Senha"
                         type="password"
                         onChange={setCpf}
-                        icon={<FaLock />}
+                        leftElement={<FaLock />}
                         isDisabled
                     />
                     <Checkbox>Continuar conectado?</Checkbox>
