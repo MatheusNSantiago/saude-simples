@@ -3,12 +3,20 @@ import * as examesInfo from "../exames.json";
 export type ExameGroup = keyof typeof examesInfo;
 export type ExameName<Group extends ExameGroup> = Group extends ExameGroup
     ? keyof typeof examesInfo[Group]
-    : ExameName<ExameGroup>
+    : ExameName<ExameGroup>;
+
+export interface IExame {
+    group: ExameGroup;
+    name: ExameName<ExameGroup>;
+    value: number;
+    date?: Date;
+}
 
 export class Exame<
     Group extends ExameGroup = ExameGroup,
     Name extends ExameName<Group> = ExameName<Group>
-> {
+> implements IExame
+{
     group: Group;
     name: Name;
     value: number;

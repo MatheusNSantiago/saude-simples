@@ -22,14 +22,28 @@ import CustomInput from "../components/CustomInput";
 import { hex2rgba } from "../utils";
 import examesInfo from "../exames.json";
 import { MouseEventHandler, useState } from "react";
-import { ExameGroup } from "../models/Exame";
+import { ExameGroup, ExameName, IExame } from "../models/Exame";
+import axios from "axios";
+import { useAppSelector } from "../app/hooks";
+import { selectUser } from "../features/userSlice";
 
 const AdicionarExames = () => {
+    const user = useAppSelector(selectUser);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
-    const [entries, setEntries] = useState<ExameEntry[]>([]);
+    const [entries, setEntries] = useState<IExame[]>([]);
 
-    const onSave = () => {};
+    const onSave = async () => {
+        if (entries.length > 0) {
+            const res = await axios.post("/api/addExame", {
+                cpf: user?.cpf,
+                exames: entries,
+            });
+
+            onClose();
+        }
+    };
 
     return (
         <>
@@ -48,7 +62,12 @@ const AdicionarExames = () => {
             />
             <Modal
                 size="sm"
-                onClose={onClose}
+                onClose={() => {
+                    setEntries([]);
+                    setExameGroup("bio-impedancia");
+
+                    onClose();
+                }}
                 isOpen={isOpen}
                 motionPreset="slideInBottom"
             >
@@ -62,22 +81,26 @@ const AdicionarExames = () => {
                             <Card
                                 label="Bio Impedância"
                                 imgSrc="bio-impedancia.svg"
+                                isSelected={exameGroup === "bio-impedancia"}
                                 bgColor="#ffc61b"
                                 onClick={() => setExameGroup("bio-impedancia")}
                             />
                             <Card
-                                label="Sangue"
+                                label="Hemograma"
                                 imgSrc="blood.svg"
+                                isSelected={exameGroup === "hemograma"}
                                 bgColor="#fa6e51"
                                 onClick={() => setExameGroup("hemograma")}
                             />
                             <Card
-                                label="Sangue"
+                                label="Coiso"
+                                isSelected={false}
                                 imgSrc="blood.svg"
                                 onClick={() => {}}
                             />
                             <Card
                                 label="Sangue"
+                                isSelected={false}
                                 imgSrc="blood.svg"
                                 onClick={() => {}}
                             />
@@ -86,42 +109,49 @@ const AdicionarExames = () => {
                         {Object.entries(examesInfo[exameGroup]).map(
                             ([exameName, { unidade }]) => {
                                 const entry = entries.find(
-                                    ({ nome }) => nome === exameName
+                                    ({ name }) => name === exameName
                                 );
 
                                 return (
                                     <CustomInput
                                         label={exameName}
                                         rightElement={unidade}
-                                        value={entry?.valor.toString()}
+                                        value={entry?.value.toString()}
                                         type="number"
-                                        onChange={(v: number) => {
+                                        onChange={(v: string) => {
+                                            if (v === "") {
+                                                setEntries(
+                                                    entries.filter(
+                                                        (e) =>
+                                                            e.name !== exameName
+                                                    )
+                                                );
+                                                return;
+                                            }
+
+                                            const value = Number.parseFloat(v);
                                             if (!entry) {
                                                 setEntries([
                                                     ...entries,
                                                     {
-                                                        nome: exameName,
-                                                        valor: v,
+                                                        group: exameGroup,
+                                                        name: exameName as ExameName<ExameGroup>,
+                                                        value: value,
                                                     },
                                                 ]);
-                                            } else {
-                                                setEntries(
-                                                    entries.map(
-                                                        (entry): ExameEntry => {
-                                                            if (
-                                                                entry.nome ===
-                                                                exameName
-                                                            ) {
-                                                                return {
-                                                                    nome: entry.nome,
-                                                                    valor: v,
-                                                                };
-                                                            }
-                                                            return entry;
-                                                        }
-                                                    )
-                                                );
+                                                return;
                                             }
+
+                                            setEntries(
+                                                entries.map((entry): IExame => {
+                                                    if (
+                                                        entry.name === exameName
+                                                    )
+                                                        entry.value = value;
+
+                                                    return entry;
+                                                })
+                                            );
                                         }}
                                         key={exameName}
                                     />
@@ -130,7 +160,9 @@ const AdicionarExames = () => {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button w="full">Salvar</Button>
+                        <Button w="full" onClick={onSave}>
+                            Salvar
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -139,11 +171,10 @@ const AdicionarExames = () => {
 };
 export default AdicionarExames;
 
-type ExameEntry = { nome: string; valor: number };
-
 type CardProps = {
     label: string;
     imgSrc: string;
+    isSelected: boolean;
     onClick: MouseEventHandler;
     bgColor?: string;
     size?: number;
@@ -152,6 +183,7 @@ type CardProps = {
 const Card = ({
     label,
     imgSrc,
+    isSelected,
     bgColor = "#ffc61b",
     onClick,
     size = 28,
@@ -161,6 +193,7 @@ const Card = ({
             bgColor!,
             opacity2
         )})`;
+
     return (
         <Box boxSize={size} transform="auto" shadow={"lg"}>
             <Button
@@ -171,11 +204,9 @@ const Card = ({
                 pt="4"
                 boxSize={size}
                 borderColor={hex2rgba(bgColor!, 0.6)}
+                bgColor={isSelected ? hex2rgba(bgColor!, 0.3) : ""}
                 _hover={{ bgGradient: getBgGradient(0.15, 0.2) }}
-                _active={{
-                    bgGradient: getBgGradient(0.3, 0.4),
-                    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                }}
+                _active={{ bgGradient: getBgGradient(0.3, 0.4) }}
             >
                 <VStack boxSize="full">
                     <Image

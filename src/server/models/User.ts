@@ -1,10 +1,11 @@
 import { Schema, model, models, Model } from "mongoose";
-import { ExameSchema, IExame } from "./Exame";
+import { IExame } from "../../models/Exame";
+import { ExameSchema } from "./Exame";
 
 export interface IUser {
     cpf: string;
     nome: string;
-    nascimento:Date ;
+    nascimento: Date;
     altura: number;
     exames: [IExame];
     email: string;
