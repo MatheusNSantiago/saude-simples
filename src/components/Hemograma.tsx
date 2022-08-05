@@ -75,7 +75,7 @@ function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
                         _hover={{ bg: "transparent" }}
                     >
                         <HStack w="full" align={"end"}>
-                            <Heading fontSize={"larger"}>{title}</Heading>
+                            <Heading fontSize={["17", "xl"]}>{title}</Heading>
                             <Image src={iconSrc} alt="" w={8} />
                             <Spacer />
                             <AccordionIcon />
@@ -121,11 +121,11 @@ function ExamePannel({ title, valor, faixa, units }: ExamePannelProps) {
             borderBottom={"1px solid lightgray"}
         >
             <HStack pos="relative" align="baseline">
-                <Heading fontSize={"xl"} fontFamily={"mono"}>
+                <Heading fontSize={["lg", "xl"]} fontFamily={"mono"}>
                     {title}
                 </Heading>
                 <Spacer />
-                <Text fontSize={"xl"} fontWeight="bold" fontFamily={"mono"}>
+                <Text fontSize={["lg", "xl"]} fontWeight="bold" fontFamily={"mono"}>
                     {valor}
                 </Text>
                 <Text fontSize={"sm"} fontFamily={"mono"}>

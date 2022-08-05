@@ -30,10 +30,12 @@ import {
 import { AiOutlineUser } from "react-icons/ai";
 import AdicionarExames from "./adicionarExames";
 import CustomInput from "../components/CustomInput";
+import { User } from "../models/User";
 
 const Home = () => {
     const router = useRouter();
-    const user = useAppSelector(selectUser);
+    // const user = useAppSelector(selectUser);
+    const user = User.getFakeUser();
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
@@ -52,11 +54,10 @@ const Home = () => {
         <Box bg="gray.50" minH={"100vh"}>
             <Container size={"lg"} p={0} bg="white">
                 <Box
-                    px={8}
-                    py={10}
-                    shadow="sm"
+                    p={8}
+                    shadow="md"
                     roundedBottom={30}
-                    bgGradient={"linear(130deg, primary.300, primary.200)"}
+                    bgGradient={"linear(130deg, primary.400, primary.300)"}
                 >
                     <HStack>
                         <Avatar

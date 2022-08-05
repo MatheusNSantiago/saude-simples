@@ -12,7 +12,7 @@ const HeadingDetalhes = ({ title }: { title: string }) => {
     return (
         <Box mb={2.5}>
             <HStack w="full" justify={"space-between"} align={"baseline"}>
-                <Heading fontSize={{ base: "22", sm: "x-large" }}>
+                <Heading fontSize={{ base: "20.5", sm: "x-large" }}>
                     {title}
                 </Heading>
                 <Button colorScheme="whiteAlpha" variant="ghost">

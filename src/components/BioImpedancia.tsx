@@ -25,24 +25,25 @@ function BioImpedancia({ user }: { user: User }) {
     return (
         <Box w="full">
             <HeadingDetalhes title="Bio Impedância" />
-            <VStack alignItems="flex-start" width="full" spacing={5}>
-                <HStack
-                    rounded="2xl"
-                    shadow="1px 1px 4px rgba(0, 0, 0, 0.2)"
-                    w="full"
-                >
+            <Box
+                // alignItems="flex-start"
+                width="full"
+                // spacing={5}
+                shadow="1px 1px 4px rgba(0, 0, 0, 0.2)"
+                rounded="2xl"
+            >
+                <HStack w="full">
                     <Data labels={labels} values={values} userAltura={altura} />
                     <Pie
                         data={values}
                         labels={labels}
                         props={{
-                            flex: 0.9,
-                            pt: 4,
+                            flex: [0.85, 0.7],
                             shadow: "-6px 0px 4px -3.5px rgba(0, 0, 0, 0.25)",
                         }}
                     />
                 </HStack>
-            </VStack>
+            </Box>
         </Box>
     );
 }
@@ -106,8 +107,8 @@ function Data({ labels, values, userAltura }: DataProps) {
                 );
             })}
             <HStack w="full" justify={"space-between"}>
-                <Heading size="lg">IMC:</Heading>
-                <Heading size="lg">{calcularIMC()}</Heading>
+                <Heading fontSize="22">IMC:</Heading>
+                <Heading fontSize="22">{calcularIMC()}</Heading>
             </HStack>
             <Alert status="success" p="1" rounded={"sm"}>
                 <AlertIcon />
