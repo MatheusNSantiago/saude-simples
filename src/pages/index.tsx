@@ -20,9 +20,16 @@ import { useRouter } from "next/router";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import Overview from "./overview";
-import { BsArchive, BsBell, BsFileBarGraph, BsHouseDoor } from "react-icons/bs";
+import {
+    BsArchive,
+    BsBell,
+    BsFileBarGraph,
+    BsHouseDoor,
+    BsSearch,
+} from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 import AdicionarExames from "./adicionarExames";
+import CustomInput from "../components/CustomInput";
 
 const Home = () => {
     const router = useRouter();
@@ -43,34 +50,68 @@ const Home = () => {
 
     return (
         <Box bg="gray.50" minH={"100vh"}>
-            <Container size={"lg"} p={0} bgColor="white">
-                <HStack p={8} shadow="sm">
-                    <Avatar src={user.foto ?? ""} boxSize={16} />
-                    <VStack
-                        w="full"
-                        pl={2}
-                        alignItems="flex-start"
-                        justify={"center"}
-                        spacing={1}
-                    >
-                        <Text fontWeight={"bold"} fontSize={"xl"}>
-                            {user.nome}
-                        </Text>
-                        <Text fontSize={"sm"}>{user.idade} anos</Text>
-                    </VStack>
-                    <IconButton
-                        aria-label=""
-                        variant={"outline"}
-                        icon={<BsBell />}
-                        onClick={() => console.log(user)}
+            <Container size={"lg"} p={0} bg="white">
+                <Box
+                    px={8}
+                    py={10}
+                    shadow="sm"
+                    roundedBottom={30}
+                    bgGradient={"linear(130deg, primary.300, primary.200)"}
+                >
+                    <HStack>
+                        <Avatar
+                            src={user.foto ?? ""}
+                            boxSize={16}
+                            shadow={"md"}
+                        />
+                        <VStack
+                            w="full"
+                            pl={2}
+                            alignItems="flex-start"
+                            justify={"center"}
+                            spacing={1}
+                        >
+                            <Text
+                                fontWeight={"bold"}
+                                color="white"
+                                fontSize={"22"}
+                                textShadow={"0px 0px 3px rgba(0, 0, 0, 0.2)"}
+                            >
+                                {user.nome}
+                            </Text>
+                            <Text
+                                fontSize={"sm"}
+                                color="white"
+                                textShadow={"0px 0px 3px rgba(0, 0, 0, 0.2)"}
+                            >
+                                {user.idade} anos
+                            </Text>
+                        </VStack>
+                        <IconButton
+                            aria-label=""
+                            variant={"ghost"}
+                            rounded="full"
+                            shadow={"md"}
+                            bg="white"
+                            _hover={{ bg: "whiteAlpha.900" }}
+                            _active={{ shadow: "none"}}
+                            icon={<BsBell />}
+                            onClick={() => console.log(user)}
+                        />
+                    </HStack>
+                    <Box h="8" />
+                    <CustomInput
+                        onChange={() => {}}
+                        leftElement={<BsSearch size={"55%"} />}
+                        inputProps={{ bgColor: "white", py: "5", shadow: "md" }}
                     />
-                </HStack>
+                </Box>
                 <Tabs
                     variant={"unstyled"}
                     index={index}
                     onChange={(newIndex) => setIndex(newIndex)}
                 >
-                    <TabPanels px={8}>
+                    <TabPanels px={8} pt={3}>
                         <TabPanel p={0}>
                             <Overview />
                         </TabPanel>

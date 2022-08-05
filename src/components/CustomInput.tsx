@@ -5,12 +5,14 @@ import {
     InputLeftElement,
     FormControl,
     InputRightAddon,
+    InputProps,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 type CustomInputProps = {
     onChange: CallableFunction;
     placeholder?: string;
+    inputProps?: InputProps;
     type?: React.HTMLInputTypeAttribute;
     value?: string;
     leftElement?: ReactNode;
@@ -25,6 +27,7 @@ const CustomInput = ({
     onChange,
     type = "text",
     leftElement,
+    inputProps,
     value,
     rightElement,
     label,
@@ -42,8 +45,10 @@ const CustomInput = ({
                     </InputLeftElement>
                 )}
                 <Input
+                    {...inputProps}
                     type={type}
                     variant="outline"
+                    focusBorderColor="transparent"
                     value={value}
                     placeholder={placeholder}
                     onChange={(e) => onChange(e.target.value)}

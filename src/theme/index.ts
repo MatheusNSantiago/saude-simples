@@ -10,12 +10,14 @@ const inputSelectStyles: ComponentStyleConfig = {
     variants: {
         outline: {
             field: {
-                _focus: { borderColor: "primary.400" },
+                // border: "0px solid",
+                // boxShadow: "0 0 0 1px g",
+                _focus: { boxShadow: "0 0 0 1px #8ac919"},
             },
         },
         filled: {
             field: {
-                _focus: { borderColor: "primary.500" },
+                _focus: { boxShadow: "0 0 0 1px #8ac919" },
             },
         },
     },
@@ -70,11 +72,9 @@ const theme = extendTheme(
             // body: `Monospace, ${base.fonts.body}`,
         },
         components: {
-            // Button: Tab,
             Tabs,
             Input: inputSelectStyles,
             Link,
-
             Select: inputSelectStyles,
         },
     },
