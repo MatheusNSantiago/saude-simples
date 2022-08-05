@@ -36,4 +36,7 @@ export class Exame<
     public get unidade() {
         return (examesInfo as any)[this.group][this.name].unidade;
     }
+
+    static getNamesForGroup = (group: ExameGroup) =>
+        Object.keys(examesInfo[group]);
 }

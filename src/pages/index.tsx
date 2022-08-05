@@ -34,8 +34,8 @@ import { User } from "../models/User";
 
 const Home = () => {
     const router = useRouter();
-    // const user = useAppSelector(selectUser);
-    const user = User.getFakeUser();
+    const user = useAppSelector(selectUser);
+    // const user = User.getFakeUser();
     const [index, setIndex] = useState(0);
 
     useEffect(() => {

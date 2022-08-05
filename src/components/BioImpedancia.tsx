@@ -9,29 +9,38 @@ import {
     AlertIcon,
     Box,
     Icon,
+    Container,
+    Hide,
+    Flex,
+    Center,
 } from "@chakra-ui/react";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import Pie from "./charts/Pie";
 import HeadingDetalhes from "./HeadingDetalhes";
 import { User } from "../models/User";
+import {
+    BsExclamationCircle,
+    BsExclamationCircleFill,
+    BsFileBarGraph,
+} from "react-icons/bs";
+import { Exame } from "../models/Exame";
 
 function BioImpedancia({ user }: { user: User }) {
     var { exames, altura } = user;
 
     exames = exames.filter((exame) => exame.group == "bio-impedancia");
-    const labels = exames.map((exame) => exame.name);
+    const labels = Exame.getNamesForGroup("bio-impedancia");
     const values = exames.map((exame) => exame.value);
 
     return (
         <Box w="full">
             <HeadingDetalhes title="Bio Impedância" />
             <Box
-                // alignItems="flex-start"
-                width="full"
-                // spacing={5}
                 shadow="1px 1px 4px rgba(0, 0, 0, 0.2)"
                 rounded="2xl"
+                pos="relative"
             >
+                {exames.length === 0 && <NoDataFound />}
                 <HStack w="full">
                     <Data labels={labels} values={values} userAltura={altura} />
                     <Pie
@@ -82,7 +91,6 @@ function Data({ labels, values, userAltura }: DataProps) {
                     <Box key={index} w="full">
                         <HStack justify={"start"} spacing={0}>
                             <Text fontSize={["smaller", "sm"]}>{label}:</Text>
-
                             <Spacer />
                             <Text fontSize={["smaller", "sm"]}>
                                 {values[index]}kg
@@ -102,7 +110,7 @@ function Data({ labels, values, userAltura }: DataProps) {
                             </Text>
                         </HStack>
 
-                        <Divider />
+                        <Divider h={1.5} />
                     </Box>
                 );
             })}
@@ -115,5 +123,48 @@ function Data({ labels, values, userAltura }: DataProps) {
                 Peso Normal
             </Alert>
         </VStack>
+    );
+}
+
+function NoDataFound() {
+    return (
+        <Center
+            bg="gray.100"
+            rounded={"2xl"}
+            zIndex={2}
+            boxSize="full"
+            pos="absolute"
+        >
+            <VStack pt={4}>
+                <Box pos={"relative"}>
+                    <Icon
+                        as={BsFileBarGraph}
+                        boxSize={24} // make a filter that lets the color with an alpha of 0.8
+                        color="primary.500"
+                        opacity={0.6}
+                    />
+                    <Box
+                        bgColor="gray.100"
+                        pos={"absolute"}
+                        top={-4}
+                        left={0}
+                        boxSize={10}
+                        rounded="full"
+                    >
+                        <Icon
+                            as={BsExclamationCircleFill}
+                            boxSize="full"
+                            opacity={0.7}
+                            color="primary.500"
+                            rounded="full"
+                            shadow="md"
+                        />
+                    </Box>
+                </Box>
+                <Text fontSize={"lg"} color="GrayText">
+                    Nenhum exame encontrado
+                </Text>
+            </VStack>
+        </Center>
     );
 }
