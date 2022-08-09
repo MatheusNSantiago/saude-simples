@@ -38,26 +38,32 @@ export class Exame<
     }
 
     static getNamesForGroup = (group: ExameGroup) =>
-        Object.keys(examesInfo[group]);
+        Object.keys(examesInfo[group]) as ExameName<typeof group>[];
 
-    static getMostRecentExamesForGroup = (
+    static getNMostRecentExamesForGroup = <
+        G extends ExameGroup,
+        T extends ExameName<G>
+    >(
         exames: Exame[],
-        group: ExameGroup
+        group: G,
+        N = 2
     ) => {
         const examesGrupo = exames
             .filter((exame) => exame.group === group)
             .sort((a, b) => b.date.getTime() - a.date.getTime());
 
-        const examesMaisNovos: Exame[] = [];
+        const examesMaisNovos: any = {};
 
         Exame.getNamesForGroup(group).forEach((exameName) => {
-            const exame: Exame | undefined = examesGrupo.filter(
-                (exame) => exame.name === exameName
-            )[0];
+            const exames: Exame[] | undefined = examesGrupo
+                .filter((exame) => exame.name === exameName)
+                .slice(0, N);
 
-            if (exame) examesMaisNovos.push(exame);
+            examesMaisNovos[exameName] = exames ?? [];
         });
 
-        return examesMaisNovos;
+        return examesMaisNovos as {
+            [Name in T]: Exame[];
+        };
     };
 }
