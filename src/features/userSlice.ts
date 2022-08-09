@@ -1,8 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
+import { Exame, IExame } from "../models/Exame";
 import { User } from "../models/User";
+import { IUser } from "../server/models/User";
 
-const initialState: { user?: User } = { user: undefined };
+const initialState: IUser = {
+    nome: "",
+    cpf: "",
+    nascimento: Date.now(),
+    altura: -1,
+    exames: [],
+};
 
 const userSlice = createSlice({
     name: "user",
@@ -12,32 +20,57 @@ const userSlice = createSlice({
             const { nome, cpf, nascimento, altura, exames, email, foto } =
                 action.payload;
 
-            const user = new User(
-                nome,
-                cpf,
-                new Date(nascimento),
-                exames,
-                altura,
-                email,
-                foto
+            state.nome = nome;
+            state.cpf = cpf;
+            state.nascimento = Date.parse(nascimento);
+            state.altura = altura;
+            state.exames = exames.map(
+                ({ group, name, value, date }: IExame) => {
+                    return {
+                        group: group,
+                        name: name,
+                        value: value,
+                        date: date,
+                    };
+                }
+            );
+            state.email = email;
+            state.foto = foto;
+        },
+        addExames: (state, action: PayloadAction<IExame[]>) => {
+            const exames = action.payload.map(
+                ({ group, name, value, date }) => {
+                    return {
+                        group,
+                        name,
+                        value,
+                        date: date,
+                    };
+                }
             );
 
-            state.user = user;
+            state.exames = [...state.exames, ...exames];
         },
-        // removeProduct: (state, action: PayloadAction<Product>) => {
-        //   const product = action.payload;
-        //   state.products = state.products.filter((p) => p.id != product.id);
-        //   state.total -= product.price;
-        // },
-        // clearCart: (state) => {
-        //   state.products = [];
-        //   state.total = 0;
-        // },
     },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, addExames } = userSlice.actions;
 
-export const selectUser = (state: RootState) => state.user.user;
+export const selectUser = ({ user }: RootState) => {
+    if (user.nome === "") return undefined;
+
+    return new User(
+        user.nome,
+        user.cpf,
+        new Date(user.nascimento),
+        user.exames.map(
+            ({ group, name, value, date }) =>
+                new Exame(group, name, value, new Date(date))
+        ),
+        user.altura,
+        user.email,
+        user.foto
+    );
+};
 
 export default userSlice.reducer;

@@ -17,12 +17,20 @@ import {
     Circle,
     Badge,
 } from "@chakra-ui/react";
+import { useAppSelector } from "../app/hooks";
+import { selectUser } from "../features/userSlice";
 import { Exame } from "../models/Exame";
 import { User } from "../models/User";
 import HeadingDetalhes from "./HeadingDetalhes";
 
-function Hemograma({ user }: { user: User }) {
+function Hemograma() {
+    const user = useAppSelector(selectUser)!;
     const exames = user.exames.filter(({ group }) => group == "hemograma");
+    const globulosVermelhos = exames.find(({ name }) =>
+        Exame.getNamesForGroup("hemograma").slice(0, 7).includes(name)
+    );
+
+    // console.log(globulosVermelhos);
 
     return (
         <Box w="full">
@@ -125,7 +133,11 @@ function ExamePannel({ title, valor, faixa, units }: ExamePannelProps) {
                     {title}
                 </Heading>
                 <Spacer />
-                <Text fontSize={["lg", "xl"]} fontWeight="bold" fontFamily={"mono"}>
+                <Text
+                    fontSize={["lg", "xl"]}
+                    fontWeight="bold"
+                    fontFamily={"mono"}
+                >
                     {valor}
                 </Text>
                 <Text fontSize={"sm"} fontFamily={"mono"}>

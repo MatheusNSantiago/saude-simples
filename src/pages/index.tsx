@@ -30,13 +30,11 @@ import {
 import { AiOutlineUser } from "react-icons/ai";
 import AdicionarExames from "./adicionarExames";
 import CustomInput from "../components/CustomInput";
-import { User } from "../models/User";
 
 const Home = () => {
     const router = useRouter();
     const user = useAppSelector(selectUser);
-    // const user = User.getFakeUser();
-    const [index, setIndex] = useState(0);
+    const [tabIndex, setIndex] = useState(0);
 
     useEffect(() => {
         if (!user) router.push("/login");
@@ -109,7 +107,7 @@ const Home = () => {
                 </Box>
                 <Tabs
                     variant={"unstyled"}
-                    index={index}
+                    index={tabIndex}
                     onChange={(newIndex) => setIndex(newIndex)}
                 >
                     <TabPanels px={8} pt={3}>
@@ -137,22 +135,22 @@ const Home = () => {
                             <CustomTab
                                 label="Geral"
                                 icon={BsHouseDoor}
-                                isSelected={index === 0}
+                                isSelected={tabIndex === 0}
                             />
                             <CustomTab
                                 label="Arquivados"
                                 icon={BsArchive}
-                                isSelected={index === 1}
+                                isSelected={tabIndex === 1}
                             />
                             <CustomTab
                                 label="Resultados"
                                 icon={BsFileBarGraph}
-                                isSelected={index === 2}
+                                isSelected={tabIndex === 2}
                             />
                             <CustomTab
                                 label="Perfil"
                                 icon={AiOutlineUser}
-                                isSelected={index === 3}
+                                isSelected={tabIndex === 3}
                             />
                         </TabList>
                     </Container>

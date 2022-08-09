@@ -1,9 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import UserModel from "../../server/models/User";
 import { connectMongo } from "../../server/connectMongo";
-import { IExame } from "../../models/Exame";
+import { Exame, IExame } from "../../models/Exame";
 
-const addExame = async (req: NextApiRequest, res: NextApiResponse) => {
+const addExame = async (
+    req: NextApiRequest,
+    res: NextApiResponse<IExame[] | null>
+) => {
     await connectMongo();
 
     const userDoc = await UserModel.findOne({ cpf: req.body.cpf });
@@ -21,7 +24,11 @@ const addExame = async (req: NextApiRequest, res: NextApiResponse) => {
 
         await userDoc.save();
 
-        return res.status(200).send(userDoc.exames);
+        return res.status(200).json(
+            userDoc.exames.map(({ group, name, value, date }): IExame => {
+                return { group, name, value, date };
+            })
+        );
     }
 
     return res.status(500).send(null);

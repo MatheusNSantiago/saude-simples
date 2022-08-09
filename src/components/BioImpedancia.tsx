@@ -9,28 +9,24 @@ import {
     AlertIcon,
     Box,
     Icon,
-    Container,
-    Hide,
-    Flex,
     Center,
 } from "@chakra-ui/react";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import Pie from "./charts/Pie";
 import HeadingDetalhes from "./HeadingDetalhes";
-import { User } from "../models/User";
-import {
-    BsExclamationCircle,
-    BsExclamationCircleFill,
-    BsFileBarGraph,
-} from "react-icons/bs";
+import { BsExclamationCircleFill, BsFileBarGraph } from "react-icons/bs";
 import { Exame } from "../models/Exame";
+import { useAppSelector } from "../app/hooks";
+import { selectUser } from "../features/userSlice";
 
-function BioImpedancia({ user }: { user: User }) {
-    var { exames, altura } = user;
+function BioImpedancia() {
+    var { altura, exames } = useAppSelector(selectUser)!;
 
-    exames = exames.filter((exame) => exame.group == "bio-impedancia");
-    const labels = Exame.getNamesForGroup("bio-impedancia");
-    const values = exames.map((exame) => exame.value);
+    exames = Exame.getMostRecentExamesForGroup(exames, "bio-impedancia");
+    var labels = Exame.getNamesForGroup("bio-impedancia");
+
+    const values = exames.map(({ value }) => value);
+
 
     return (
         <Box w="full">

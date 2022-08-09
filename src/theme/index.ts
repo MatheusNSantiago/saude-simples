@@ -28,7 +28,6 @@ const inputSelectStyles: ComponentStyleConfig = {
 
 const Tabs: ComponentStyleConfig = {
     parts: ["tab"],
-    // The styles all button have in common
     variants: {
         line: {
             tab: {

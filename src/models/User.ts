@@ -47,34 +47,4 @@ export class User {
         return this.exames.filter((exame) => exame.group == group);
     }
 
-    static getFakeUser() {
-        return new User(
-            "Pessoa",
-            "12345678901",
-            new Date(1971, 1, 1),
-            [
-                new Exame(
-                    "bio-impedancia",
-                    "Massa Magra",
-                    30,
-                    new Date(2020, 1, 1)
-                ),
-                new Exame(
-                    "bio-impedancia",
-                    "Massa Gorda",
-                    15,
-                    new Date(2020, 1, 1)
-                ),
-                new Exame(
-                    "bio-impedancia",
-                    "Massa Muscular",
-                    20,
-                    new Date(2020, 1, 1)
-                ),
-            ],
-            167,
-            "email@email.com",
-            "https://randomuser.me/api/portraits/women/0.jpg"
-        );
-    }
 }

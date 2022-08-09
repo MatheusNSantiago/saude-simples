@@ -5,11 +5,11 @@ import { ExameSchema } from "./Exame";
 export interface IUser {
     cpf: string;
     nome: string;
-    nascimento: Date;
+    nascimento: Date | number;
     altura: number;
-    exames: [IExame];
-    email: string;
-    foto: string;
+    exames: IExame[];
+    email?: string;
+    foto?: string;
 }
 
 const UserSchema = new Schema<IUser>({

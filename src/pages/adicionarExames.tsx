@@ -39,6 +39,7 @@ const AdicionarExames = () => {
     });
 
     const { isOpen, onOpen, onClose } = useDisclosure(); // parada que abre e fecha o modal
+
     const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
 
     const [exames, setExames] = useState<IExame[]>([]);
@@ -56,6 +57,7 @@ const AdicionarExames = () => {
 
         if (res.status === 200) {
             dispatch(addExames(exames));
+            setExames([]);
             onClose();
         } else {
             toast({ title: "Erro no servidor" });
@@ -83,8 +85,6 @@ const AdicionarExames = () => {
                 size="sm"
                 onClose={() => {
                     setExames([]);
-                    setExameGroup("bio-impedancia");
-
                     onClose();
                 }}
                 isOpen={isOpen}
@@ -135,14 +135,14 @@ const AdicionarExames = () => {
                                     <CustomInput
                                         label={exameName}
                                         rightElement={unidade}
-                                        value={entry?.value.toString()}
+                                        value={entry?.value.toString() ?? ""}
                                         type="number"
                                         onChange={(v: string) => {
                                             if (v === "") {
                                                 setExames(
                                                     exames.filter(
-                                                        (e) =>
-                                                            e.name !== exameName
+                                                        ({ name }) =>
+                                                            name !== exameName
                                                     )
                                                 );
                                                 return;
@@ -156,6 +156,7 @@ const AdicionarExames = () => {
                                                         group: exameGroup,
                                                         name: exameName as ExameName<ExameGroup>,
                                                         value: value,
+                                                        date: new Date(),
                                                     },
                                                 ]);
                                                 return;
