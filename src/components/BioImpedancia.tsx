@@ -22,11 +22,18 @@ import { selectUser } from "../features/userSlice";
 function BioImpedancia() {
     var { altura, exames } = useAppSelector(selectUser)!;
 
-    exames = Exame.getMostRecentExamesForGroup(exames, "bio-impedancia");
-    var labels = Exame.getNamesForGroup("bio-impedancia");
+    const mostRecentExames = Exame.getNMostRecentExamesForGroup(
+        exames,
+        "bio-impedancia"
+    );
+    // const labels = mostRecentExames.map(({ name }) => name);
+    const labels = Object.keys(mostRecentExames);
 
-    const values = exames.map(({ value }) => value);
-
+    const values = Object.values(mostRecentExames).map((v) => {
+        
+        return v[0].value;
+    });
+    // const mostRecentValues = exames.filter(({ name }) => labels.includes(name)).map(({ value }) => value);
 
     return (
         <Box w="full">
@@ -40,8 +47,8 @@ function BioImpedancia() {
                 <HStack w="full">
                     <Data labels={labels} values={values} userAltura={altura} />
                     <Pie
-                        data={values}
                         labels={labels}
+                        data={values}
                         props={{
                             flex: [0.85, 0.7],
                             shadow: "-6px 0px 4px -3.5px rgba(0, 0, 0, 0.25)",
