@@ -26,11 +26,22 @@ import HeadingDetalhes from "./HeadingDetalhes";
 function Hemograma() {
     const user = useAppSelector(selectUser)!;
     const exames = user.exames.filter(({ group }) => group == "hemograma");
-    const globulosVermelhos = exames.find(({ name }) =>
-        Exame.getNamesForGroup("hemograma").slice(0, 7).includes(name)
-    );
 
-    // console.log(globulosVermelhos);
+    const hemacias = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hemácias")
+    const hemoglobina = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hemoglobina")
+    const hematocrito = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hematócrito")
+    const vcm = exames.filter(exame => exame.group === "hemograma" && exame.name === "Volume Corpuscular Médio (VCM)")
+    const hcm = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hemoglobina Corpuscular Média (HCM)")
+    const chcm = exames.filter(exame => exame.group === "hemograma" && exame.name === "Concentração da Hemoglobina Corpuscular Média (CHCM)")
+    const rdw = exames.filter(exame => exame.group === "hemograma" && exame.name === "Amplitude de Distribuição dos Glóbulos Vermelhos (RDW)")
+    const leucocitos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Leucócitos")
+    const bastonetes = exames.filter(exame => exame.group === "hemograma" && exame.name === "Bastonetes")
+    const segmentados = exames.filter(exame => exame.group === "hemograma" && exame.name === "Segmentados")
+    const linfocitos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Linfócitos")
+    const monocitos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Monócitos")
+    const eosinofilos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Eosinófilos")
+    const basofilos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Basófilos")
+    const plaquetas = exames.filter(exame => exame.group === "hemograma" && exame.name === "Plaquetas")
 
     return (
         <Box w="full">
@@ -46,18 +57,90 @@ function Hemograma() {
                 <ExameGroup
                     title="Glóbulos Vermelhos"
                     iconSrc="red-blood-cell.svg"
-                    exames={exames}
+                    exames={hemacias}
                 />
                 <Divider my={2} />
                 <ExameGroup
-                    title="Glóbulos Brancos"
-                    exames={exames}
+                    title="Hemoglobina"
+                    exames={hemoglobina}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Hematócrito"
+                    exames={hematocrito}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="VCM"
+                    exames={vcm}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="HCM"
+                    exames={hcm}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="CHCM"
+                    exames={chcm}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="RDW"
+                    exames={rdw}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Leucócitos"
+                    exames={leucocitos}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Bastonetes"
+                    exames={bastonetes}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Segmentados"
+                    exames={segmentados}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Linfócitos"
+                    exames={linfocitos}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Monócitos"
+                    exames={monocitos}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Eosinófilos"
+                    exames={eosinofilos}
+                    iconSrc="red-blood-cell.svg"
+                />
+                <Divider my={2} />
+                <ExameGroup
+                    title="Basófilos"
+                    exames={basofilos}
                     iconSrc="red-blood-cell.svg"
                 />
                 <Divider my={2} />
                 <ExameGroup
                     title="Plaquetas"
-                    exames={exames}
+                    exames={plaquetas}
                     iconSrc="red-blood-cell.svg"
                 />
             </Accordion>
@@ -72,6 +155,22 @@ type ExameGroupProp = {
 };
 
 function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
+
+    function renderizaExame(exame: Exame, isExpanded: boolean) {
+        return (
+            <>
+                {isExpanded && <FaixaDeReferencia faixa={[4, 7]} value={exame.value} />}
+                <ExamePannel
+                    data={exame.date}
+                    title="Hemácias"
+                    valor={exame.value}
+                    faixa={[3.4, 6.6]}
+                    units={"milhões/µL"}
+                />
+            </>
+        )
+    }
+
     return (
         <AccordionItem border="none">
             {/* TODO Fazer alguma coisa com esse isExpanded */}
@@ -89,19 +188,7 @@ function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
                             <AccordionIcon />
                         </HStack>
                     </AccordionButton>
-                    <ExamePannel
-                        title="Hemácias"
-                        valor={4.3}
-                        faixa={[3.4, 6.6]}
-                        units={"milhões/µL"}
-                    />
-                    <FaixaDeReferencia faixa={[4, 7]} value={5} />
-                    <ExamePannel
-                        title="Hemácias"
-                        valor={4.3}
-                        faixa={[3.4, 6.6]}
-                        units={"milhões/µL"}
-                    />
+                    {exames.map(exame => renderizaExame(exame, isExpanded))}
                 </Box>
             )}
         </AccordionItem>
@@ -113,9 +200,10 @@ type ExamePannelProps = {
     valor: number;
     units: string;
     faixa: [low: number, high: number];
+    data: Date;
 };
 
-function ExamePannel({ title, valor, faixa, units }: ExamePannelProps) {
+function ExamePannel({ data, title, valor, faixa, units }: ExamePannelProps) {
     const low = faixa[0];
     const high = faixa[1];
 
@@ -129,9 +217,9 @@ function ExamePannel({ title, valor, faixa, units }: ExamePannelProps) {
             borderBottom={"1px solid lightgray"}
         >
             <HStack pos="relative" align="baseline">
-                <Heading fontSize={["lg", "xl"]} fontFamily={"mono"}>
-                    {title}
-                </Heading>
+                <Text fontSize={["sm", "sm"]} fontFamily={"mono"} color="gray">
+                    {data.toLocaleString()}
+                </Text>
                 <Spacer />
                 <Text
                     fontSize={["lg", "xl"]}
@@ -173,12 +261,12 @@ function FaixaDeReferencia({ value, faixa }: FaixaDeReferenciaProps) {
     const sliderPos = value * (33.3 / low);
 
     return (
-        <Slider isReadOnly aria-label="slider-ex-6" defaultValue={sliderPos}>
-            <SliderMark value={33.3} mt={2} ml={-2.5} fontSize="sm">
-                4.5
+        <Slider isReadOnly aria-label="slider-ex-6" marginBottom={15} defaultValue={sliderPos}>
+            <SliderMark value={15} mt={4} fontSize="sm">
+                Anemia
             </SliderMark>
-            <SliderMark value={67} mt={2} ml={-2.5} fontSize="sm">
-                6.1
+            <SliderMark value={67} mt={4} ml={'15%'} fontSize="sm">
+                Alto
             </SliderMark>
             <HStack h="2" spacing={1.5}>
                 <Box boxSize="full" rounded="full" bg="red.300" />
