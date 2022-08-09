@@ -30,6 +30,7 @@ import {
 import { AiOutlineUser } from "react-icons/ai";
 import AdicionarExames from "./adicionarExames";
 import CustomInput from "../components/CustomInput";
+import { UserPage } from "../components/UserPage";
 
 const Home = () => {
     const router = useRouter();
@@ -113,6 +114,13 @@ const Home = () => {
                     <TabPanels px={8} pt={3}>
                         <TabPanel p={0}>
                             <Overview />
+                        </TabPanel>
+                        <TabPanel p={0}>
+                        </TabPanel>
+                        <TabPanel p={0}>
+                        </TabPanel>
+                        <TabPanel p={0}>
+                            <UserPage />
                         </TabPanel>
                     </TabPanels>
                     <Box h={20} />
