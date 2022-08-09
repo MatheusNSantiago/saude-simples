@@ -29,7 +29,9 @@ type PieProps = {
 };
 
 function PieChart({ data, labels, props }: PieProps) {
-    const offset = useBreakpointValue({ base: -4, sm: 4 } );
+    const offset = useBreakpointValue({ base: -5.5, sm: -2 });
+    // Check if is mobile
+    const isMobile = useMediaQuery("(max-width: 1068px)");
     /* Ver se isso aqui faz sentido de botar */
     /*     let ref = React.useRef<ChartJS<"pie">>(null);
     const [chart, setChart] = React.useState(ref.current);
@@ -83,7 +85,9 @@ function PieChart({ data, labels, props }: PieProps) {
                     context.dataset.data.forEach(
                         (value) => (total += value as number)
                     );
-                    return ((value / total) * 100).toFixed(1) + "%";
+                    return (
+                        ((value / total) * 100).toFixed(isMobile ? 0 : 1) + "%"
+                    );
                 },
                 color: "black",
                 anchor: "end",
