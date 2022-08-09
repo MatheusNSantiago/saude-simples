@@ -28,18 +28,19 @@ const Login: NextPage = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     async function onSubmit() {
+        setIsLoading(true);
         axios
             .get("/api/getUser", { params: { cpf: cpf } })
             .then((value) => {
-                setIsLoading(true);
-
                 dispatch(setUser(value.data));
-
+                
+                setIsLoading(false);
                 router.push("/");
             })
             .catch(() => {
                 setCpf("");
 
+                setIsLoading(false);
                 toast({
                     title: "CPF não encontrado",
                     status: "error",
@@ -57,6 +58,7 @@ const Login: NextPage = () => {
                     <CustomInput
                         placeholder="CPF"
                         onChange={setCpf}
+                        value={cpf}
                         type={"number"}
                         leftElement={<FaRegIdCard />}
                     />
@@ -64,6 +66,7 @@ const Login: NextPage = () => {
                         placeholder="Senha"
                         type="password"
                         onChange={setCpf}
+                        value={password}
                         leftElement={<FaLock />}
                         isDisabled
                     />

@@ -16,33 +16,52 @@ import {
     Box,
     Heading,
     Divider,
+    useToast,
 } from "@chakra-ui/react";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import CustomInput from "../components/CustomInput";
 import { hex2rgba } from "../utils";
 import examesInfo from "../exames.json";
 import { MouseEventHandler, useState } from "react";
-import { ExameGroup, ExameName, IExame } from "../models/Exame";
+import { Exame, ExameGroup, ExameName, IExame } from "../models/Exame";
 import axios from "axios";
 import { useAppSelector } from "../app/hooks";
-import { selectUser } from "../features/userSlice";
+import { addExames, selectUser } from "../features/userSlice";
+import { useDispatch } from "react-redux";
 
 const AdicionarExames = () => {
-    const user = useAppSelector(selectUser);
+    const user = useAppSelector(selectUser)!;
+    const dispatch = useDispatch();
+    const toast = useToast({
+        isClosable: true,
+        position: "top",
+        status: "error",
+    });
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure(); // parada que abre e fecha o modal
     const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
-    const [entries, setEntries] = useState<IExame[]>([]);
+
+    const [exames, setExames] = useState<IExame[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onSave = async () => {
-        if (entries.length > 0) {
-            const res = await axios.post("/api/addExame", {
-                cpf: user?.cpf,
-                exames: entries,
-            });
+        if (exames.length === 0) return;
 
+        setIsLoading(true);
+
+        const res = await axios.post("/api/addExame", {
+            cpf: user?.cpf,
+            exames: exames,
+        });
+
+        if (res.status === 200) {
+            dispatch(addExames(exames));
             onClose();
+        } else {
+            toast({ title: "Erro no servidor" });
         }
+
+        setIsLoading(false);
     };
 
     return (
@@ -63,7 +82,7 @@ const AdicionarExames = () => {
             <Modal
                 size="sm"
                 onClose={() => {
-                    setEntries([]);
+                    setExames([]);
                     setExameGroup("bio-impedancia");
 
                     onClose();
@@ -108,7 +127,7 @@ const AdicionarExames = () => {
                         <Divider mt="3" />
                         {Object.entries(examesInfo[exameGroup]).map(
                             ([exameName, { unidade }]) => {
-                                const entry = entries.find(
+                                const entry = exames.find(
                                     ({ name }) => name === exameName
                                 );
 
@@ -120,8 +139,8 @@ const AdicionarExames = () => {
                                         type="number"
                                         onChange={(v: string) => {
                                             if (v === "") {
-                                                setEntries(
-                                                    entries.filter(
+                                                setExames(
+                                                    exames.filter(
                                                         (e) =>
                                                             e.name !== exameName
                                                     )
@@ -131,8 +150,8 @@ const AdicionarExames = () => {
 
                                             const value = Number.parseFloat(v);
                                             if (!entry) {
-                                                setEntries([
-                                                    ...entries,
+                                                setExames([
+                                                    ...exames,
                                                     {
                                                         group: exameGroup,
                                                         name: exameName as ExameName<ExameGroup>,
@@ -142,8 +161,8 @@ const AdicionarExames = () => {
                                                 return;
                                             }
 
-                                            setEntries(
-                                                entries.map((entry): IExame => {
+                                            setExames(
+                                                exames.map((entry): IExame => {
                                                     if (
                                                         entry.name === exameName
                                                     )
@@ -160,7 +179,7 @@ const AdicionarExames = () => {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button w="full" onClick={onSave}>
+                        <Button w="full" onClick={onSave} isLoading={isLoading}>
                             Salvar
                         </Button>
                     </ModalFooter>
