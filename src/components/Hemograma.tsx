@@ -20,28 +20,30 @@ import {
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import { Exame } from "../models/Exame";
-import { User } from "../models/User";
+import { getItems, getKeys } from "../utils";
 import HeadingDetalhes from "./HeadingDetalhes";
 
 function Hemograma() {
     const user = useAppSelector(selectUser)!;
-    const exames = user.exames.filter(({ group }) => group == "hemograma");
+    const exames = Exame.getNMostRecentExamesForGroup(
+        user.exames,
+        "hemograma",
+        1
+    );
 
-    const hemacias = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hemácias")
-    const hemoglobina = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hemoglobina")
-    const hematocrito = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hematócrito")
-    const vcm = exames.filter(exame => exame.group === "hemograma" && exame.name === "Volume Corpuscular Médio (VCM)")
-    const hcm = exames.filter(exame => exame.group === "hemograma" && exame.name === "Hemoglobina Corpuscular Média (HCM)")
-    const chcm = exames.filter(exame => exame.group === "hemograma" && exame.name === "Concentração da Hemoglobina Corpuscular Média (CHCM)")
-    const rdw = exames.filter(exame => exame.group === "hemograma" && exame.name === "Amplitude de Distribuição dos Glóbulos Vermelhos (RDW)")
-    const leucocitos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Leucócitos")
-    const bastonetes = exames.filter(exame => exame.group === "hemograma" && exame.name === "Bastonetes")
-    const segmentados = exames.filter(exame => exame.group === "hemograma" && exame.name === "Segmentados")
-    const linfocitos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Linfócitos")
-    const monocitos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Monócitos")
-    const eosinofilos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Eosinófilos")
-    const basofilos = exames.filter(exame => exame.group === "hemograma" && exame.name === "Basófilos")
-    const plaquetas = exames.filter(exame => exame.group === "hemograma" && exame.name === "Plaquetas")
+    var globulosVermelhos = getItems(exames)
+        .filter(([k, v]) => getKeys(exames).slice(0, 7).includes(k) && v.length)
+        .map(([_, v]) => v[0]);
+
+    var globulosBrancos = getItems(exames)
+        .filter(
+            ([k, v]) => getKeys(exames).slice(7, -2).includes(k) && v.length
+        )
+        .map(([_, v]) => v[0]);
+
+    var plaquetas = getItems(exames)
+        .filter(([k, v]) => getKeys(exames).at(-1) === k && v.length)
+        .map(([_, v]) => v[0]);
 
     return (
         <Box w="full">
@@ -56,93 +58,14 @@ function Hemograma() {
             >
                 <ExameGroup
                     title="Glóbulos Vermelhos"
-                    iconSrc="red-blood-cell.svg"
-                    exames={hemacias}
+                    // iconSrc="red-blood-cell.svg"
+                    exames={globulosVermelhos}
                 />
                 <Divider my={2} />
-                <ExameGroup
-                    title="Hemoglobina"
-                    exames={hemoglobina}
-                    iconSrc="red-blood-cell.svg"
-                />
+                <ExameGroup title="Glóbulos Brancos" exames={globulosBrancos} />
                 <Divider my={2} />
-                <ExameGroup
-                    title="Hematócrito"
-                    exames={hematocrito}
-                    iconSrc="red-blood-cell.svg"
-                />
+                <ExameGroup title="Plaquetas" exames={plaquetas} />
                 <Divider my={2} />
-                <ExameGroup
-                    title="VCM"
-                    exames={vcm}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="HCM"
-                    exames={hcm}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="CHCM"
-                    exames={chcm}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="RDW"
-                    exames={rdw}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Leucócitos"
-                    exames={leucocitos}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Bastonetes"
-                    exames={bastonetes}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Segmentados"
-                    exames={segmentados}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Linfócitos"
-                    exames={linfocitos}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Monócitos"
-                    exames={monocitos}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Eosinófilos"
-                    exames={eosinofilos}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Basófilos"
-                    exames={basofilos}
-                    iconSrc="red-blood-cell.svg"
-                />
-                <Divider my={2} />
-                <ExameGroup
-                    title="Plaquetas"
-                    exames={plaquetas}
-                    iconSrc="red-blood-cell.svg"
-                />
             </Accordion>
         </Box>
     );
@@ -155,20 +78,15 @@ type ExameGroupProp = {
 };
 
 function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
-
-    function renderizaExame(exame: Exame, isExpanded: boolean) {
+    function renderizaExame({ name, value, faixa, unidade }: Exame) {
         return (
-            <>
-                {isExpanded && <FaixaDeReferencia faixa={[4, 7]} value={exame.value} />}
-                <ExamePannel
-                    data={exame.date}
-                    title="Hemácias"
-                    valor={exame.value}
-                    faixa={[3.4, 6.6]}
-                    units={"milhões/µL"}
-                />
-            </>
-        )
+            <ExamePannel
+                title={name}
+                valor={value}
+                faixa={faixa}
+                units={unidade}
+            />
+        );
     }
 
     return (
@@ -188,7 +106,7 @@ function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
                             <AccordionIcon />
                         </HStack>
                     </AccordionButton>
-                    {exames.map(exame => renderizaExame(exame, isExpanded))}
+                    {exames.map((exame) => renderizaExame(exame))}
                 </Box>
             )}
         </AccordionItem>
@@ -200,29 +118,28 @@ type ExamePannelProps = {
     valor: number;
     units: string;
     faixa: [low: number, high: number];
-    data: Date;
 };
 
-function ExamePannel({ data, title, valor, faixa, units }: ExamePannelProps) {
+function ExamePannel({ title, valor, faixa, units }: ExamePannelProps) {
     const low = faixa[0];
     const high = faixa[1];
+    title = new RegExp(/\((\w+)\)/g).exec(title)?.[1] ?? title;
 
     const curColor = valor < low || valor > high ? "red.300" : "green.300";
 
     return (
         <AccordionPanel
-            pb={2}
-            mb={3}
+            my={2.5}
             pl={0}
             borderBottom={"1px solid lightgray"}
         >
             <HStack pos="relative" align="baseline">
-                <Text fontSize={["sm", "sm"]} fontFamily={"mono"} color="gray">
-                    {data.toLocaleString()}
-                </Text>
+                <Heading fontSize={["lg", "larger"]} fontFamily={"mono"}>
+                    {title}
+                </Heading>
                 <Spacer />
                 <Text
-                    fontSize={["lg", "xl"]}
+                    fontSize={["lg", "larger"]}
                     fontWeight="bold"
                     fontFamily={"mono"}
                 >
@@ -261,11 +178,11 @@ function FaixaDeReferencia({ value, faixa }: FaixaDeReferenciaProps) {
     const sliderPos = value * (33.3 / low);
 
     return (
-        <Slider isReadOnly aria-label="slider-ex-6" marginBottom={15} defaultValue={sliderPos}>
+        <Slider isReadOnly aria-label="slider-ex-6" defaultValue={sliderPos}>
             <SliderMark value={15} mt={4} fontSize="sm">
                 Anemia
             </SliderMark>
-            <SliderMark value={67} mt={4} ml={'15%'} fontSize="sm">
+            <SliderMark value={67} mt={4} ml={"15%"} fontSize="sm">
                 Alto
             </SliderMark>
             <HStack h="2" spacing={1.5}>
