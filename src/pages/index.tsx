@@ -51,7 +51,7 @@ const Home = () => {
 
     return (
         <Box bg="gray.50" minH={"100vh"}>
-            <Container size={"lg"} p={0} bg="white">
+            <Container size={"lg"} p={0} bg="white" minH={"100vh"}>
                 <Box
                     p={8}
                     shadow="md"
@@ -94,7 +94,7 @@ const Home = () => {
                             shadow={"md"}
                             bg="white"
                             _hover={{ bg: "whiteAlpha.900" }}
-                            _active={{ shadow: "none"}}
+                            _active={{ shadow: "none" }}
                             icon={<BsBell />}
                             onClick={() => console.log(user)}
                         />
@@ -115,10 +115,8 @@ const Home = () => {
                         <TabPanel p={0}>
                             <Overview />
                         </TabPanel>
-                        <TabPanel p={0}>
-                        </TabPanel>
-                        <TabPanel p={0}>
-                        </TabPanel>
+                        <TabPanel p={0}></TabPanel>
+                        <TabPanel p={0}></TabPanel>
                         <TabPanel p={0}>
                             <UserPage />
                         </TabPanel>
