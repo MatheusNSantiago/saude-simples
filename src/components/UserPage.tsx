@@ -1,20 +1,55 @@
-import { VStack, Heading, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { VStack, Heading, Button, useToast, useTabs } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
-import { selectUser } from "../features/userSlice";
+import { selectUser, updateProfile } from "../features/userSlice";
 import CustomInput from "./CustomInput";
 
 export const UserPage = () => {
-    const user = useAppSelector(selectUser);
-    
-    const [name, setName] = useState<string>(user?.nome ?? '');
-    const [altura, setAltura] = useState<number>(user?.altura ?? 0);
-    const [email, setEmail] = useState<string>(user?.email ?? '');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const user = useAppSelector(selectUser)!;
+    const dispatch = useDispatch();
+
+    const toast = useToast({
+        position: "bottom",
+        isClosable: true,
+        duration: 1500,
+    });
+
+    const [name, setName] = useState("");
+    const [altura, setAltura] = useState<number | null>(null);
+    const [email, setEmail] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     function saveUser() {
-        /* TODO :: Salvar usuário */
-        /* TODO :: Adicionar loading */
+        setIsLoading(true);
+
+        const inputData = {
+            cpf: user.cpf,
+            name: name === "" ? user.nome : name,
+            altura: altura ?? user.altura,
+            email: email === "" ? user.email : email,
+        };
+
+        axios
+            .put("/api/updateUser", inputData)
+            .then(() => {
+                let { name, altura, email } = inputData;
+
+                dispatch(updateProfile({ name, altura, email }));
+
+                toast({
+                    title: "Usuário atualizado com sucesso",
+                    status: "success",
+                });
+            })
+            .catch((_) => {
+                toast({ title: "Sei lá brother", status: "error" });
+            })
+            .finally(() => {
+                setIsLoading(false);
+                setName(""), setAltura(null), setEmail("");
+            });
     }
 
     return (
@@ -29,9 +64,11 @@ export const UserPage = () => {
             <CustomInput
                 placeholder="Altura (cm)"
                 type="number"
-                onChange={setAltura}
-                value={altura.toString()}
-                />
+                onChange={(valor: string) =>
+                    setAltura(valor === "" ? null : parseInt(valor))
+                }
+                value={altura?.toString() ?? ""}
+            />
             <CustomInput
                 placeholder="Email (opcional)"
                 onChange={setEmail}

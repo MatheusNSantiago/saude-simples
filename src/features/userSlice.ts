@@ -24,37 +24,26 @@ const userSlice = createSlice({
             state.cpf = cpf;
             state.nascimento = Date.parse(nascimento);
             state.altura = altura;
-            state.exames = exames.map(
-                ({ group, name, value, date }: IExame) => {
-                    return {
-                        group: group,
-                        name: name,
-                        value: value,
-                        date: date,
-                    };
-                }
-            );
+            state.exames = exames;
             state.email = email;
             state.foto = foto;
         },
         addExames: (state, action: PayloadAction<IExame[]>) => {
-            const exames = action.payload.map(
-                ({ group, name, value, date }) => {
-                    return {
-                        group,
-                        name,
-                        value,
-                        date: date,
-                    };
-                }
-            );
+            const exames = action.payload;
 
             state.exames = [...state.exames, ...exames];
+        },
+        updateProfile: (state, action) => {
+            const { name, altura, email } = action.payload;
+            
+            state.nome = name;
+            state.altura = altura;
+            state.email = email;
         },
     },
 });
 
-export const { setUser, addExames } = userSlice.actions;
+export const { setUser, addExames, updateProfile } = userSlice.actions;
 
 export const selectUser = ({ user }: RootState) => {
     if (user.nome === "") return undefined;
