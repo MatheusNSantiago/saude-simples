@@ -11,12 +11,13 @@ import {
     AccordionIcon,
     Accordion,
     Divider,
-    Slider,
-    SliderMark,
-    SliderThumb,
-    Circle,
     Badge,
+    LinkBox,
+    Link,
+    LinkOverlay,
+    Button,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import { Exame } from "../models/Exame";
@@ -25,11 +26,7 @@ import HeadingDetalhes from "./HeadingDetalhes";
 
 function Hemograma() {
     const user = useAppSelector(selectUser)!;
-    const exames = Exame.getExamesRecentes(
-        user.exames,
-        "hemograma",
-        1
-    );
+    const exames = Exame.getExamesRecentes(user.exames, "hemograma", 1);
 
     var globulosVermelhos = getItems(exames)
         .filter(([k, v]) => getKeys(exames).slice(0, 7).includes(k) && v.length)
@@ -85,6 +82,7 @@ function ExameGroup({ title, iconSrc, exames }: ExameGroupProp) {
                 valor={value}
                 faixa={faixa}
                 units={unidade}
+                key={name}
             />
         );
     }
@@ -121,79 +119,51 @@ type ExamePannelProps = {
 };
 
 function ExamePannel({ title, valor, faixa, units }: ExamePannelProps) {
-    const low = faixa[0];
-    const high = faixa[1];
-    title = new RegExp(/\((\w+)\)/g).exec(title)?.[1] ?? title;
-
+    const [low, high] = faixa;
+    const parsedTitle = new RegExp(/\((\w+)\)/g).exec(title)?.[1] ?? title;
     const curColor = valor < low || valor > high ? "red.300" : "green.300";
 
+    const router = useRouter();
+
     return (
-        <AccordionPanel
-            my={2.5}
-            pl={0}
-            borderBottom={"1px solid lightgray"}
-        >
-            <HStack pos="relative" align="baseline">
-                <Heading fontSize={["lg", "larger"]} fontFamily={"mono"}>
-                    {title}
-                </Heading>
-                <Spacer />
-                <Text
-                    fontSize={["lg", "larger"]}
-                    fontWeight="bold"
-                    fontFamily={"mono"}
-                >
-                    {valor}
-                </Text>
-                <Text fontSize={"sm"} fontFamily={"mono"}>
-                    {units}
-                </Text>
-            </HStack>
-            <HStack spacing={0}>
-                <Text fontSize="12" fontFamily={"mono"} textAlign="start">
-                    Referência: {low} a {high} {units}
-                </Text>
-                <Spacer />
-                {curColor == "green.300" ? (
-                    <Badge colorScheme="green">Normal</Badge>
-                ) : (
-                    <Badge colorScheme="red">Risco</Badge>
-                )}
-            </HStack>
-        </AccordionPanel>
+        <a href="#">
+            <AccordionPanel
+                my={2}
+                pl={0}
+                borderBottom={"1px solid lightgray"}
+                _hover={{ backgroundColor: "gray.50" }}
+                onClick={() => router.push(`/exame/${title}`)}
+            >
+                <HStack pos="relative" align="baseline">
+                    <Heading fontSize={["lg", "larger"]} fontFamily={"mono"}>
+                        {parsedTitle}
+                    </Heading>
+                    <Spacer />
+                    <Text
+                        fontSize={["lg", "larger"]}
+                        fontWeight="bold"
+                        fontFamily={"mono"}
+                    >
+                        {valor}
+                    </Text>
+                    <Text fontSize={"sm"} fontFamily={"mono"}>
+                        {units}
+                    </Text>
+                </HStack>
+                <HStack spacing={0}>
+                    <Text fontSize="12" fontFamily={"mono"} textAlign="start">
+                        Referência: {low} a {high} {units}
+                    </Text>
+                    <Spacer />
+                    {curColor == "green.300" ? (
+                        <Badge colorScheme="green">Normal</Badge>
+                    ) : (
+                        <Badge colorScheme="red">Risco</Badge>
+                    )}
+                </HStack>
+            </AccordionPanel>
+        </a>
     );
 }
 
-type FaixaDeReferenciaProps = {
-    value: number;
-    faixa: [low: number, high: number];
-};
-
-function FaixaDeReferencia({ value, faixa }: FaixaDeReferenciaProps) {
-    const low = faixa[0];
-    const high = faixa[1];
-
-    const curColor = value < low || value > high ? "red.300" : "green.300";
-
-    const sliderPos = value * (33.3 / low);
-
-    return (
-        <Slider isReadOnly aria-label="slider-ex-6" defaultValue={sliderPos}>
-            <SliderMark value={15} mt={4} fontSize="sm">
-                Anemia
-            </SliderMark>
-            <SliderMark value={67} mt={4} ml={"15%"} fontSize="sm">
-                Alto
-            </SliderMark>
-            <HStack h="2" spacing={1.5}>
-                <Box boxSize="full" rounded="full" bg="red.300" />
-                <Box boxSize="full" rounded="full" bg="green.300" />
-                <Box boxSize="full" rounded="full" bg="red.300" />
-            </HStack>
-            <SliderThumb boxSize={5} borderColor={curColor} borderWidth="2px">
-                <Circle size={3} bg={curColor} />
-            </SliderThumb>
-        </Slider>
-    );
-}
 export default Hemograma;

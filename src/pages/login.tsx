@@ -30,10 +30,10 @@ const Login: NextPage = () => {
     async function onSubmit() {
         setIsLoading(true);
         axios
-            .get("/api/getUser", { params: { cpf: cpf } })
+            .get("/api/getUser", { params: { cpf } })
             .then((value) => {
                 dispatch(setUser(value.data));
-                
+
                 setIsLoading(false);
                 router.push("/");
             })
