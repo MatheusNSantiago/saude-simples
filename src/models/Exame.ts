@@ -40,13 +40,16 @@ export class Exame<
     static getNamesForGroup = (group: ExameGroup) =>
         Object.keys(examesInfo[group]) as ExameName<typeof group>[];
 
-    static getNMostRecentExamesForGroup = <
-        G extends ExameGroup,
-        T extends ExameName<G>
-    >(
+    /**
+     * @param group Grupo ao qual os exames pertencem
+     * @param limite Limite de exames de mesmo nome a serem retornados
+     *
+     * @returns Objeto com todos os nomes de exames do grupo como keys e uma lista de [limite] exames como value
+     */
+    static getExamesRecentes = <G extends ExameGroup, T extends ExameName<G>>(
         exames: Exame[],
         group: G,
-        N = 2
+        limite: number
     ) => {
         const examesGrupo = exames
             .filter((exame) => exame.group === group)
@@ -57,7 +60,7 @@ export class Exame<
         Exame.getNamesForGroup(group).forEach((exameName) => {
             const exames: Exame[] | undefined = examesGrupo
                 .filter((exame) => exame.name === exameName)
-                .slice(0, N);
+                .slice(0, limite);
 
             examesMaisNovos[exameName] = exames ?? [];
         });

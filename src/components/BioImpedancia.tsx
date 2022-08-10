@@ -10,6 +10,7 @@ import {
     Box,
     Icon,
     Center,
+    AlertStatus,
 } from "@chakra-ui/react";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import Pie from "./charts/Pie";
@@ -18,22 +19,22 @@ import { BsExclamationCircleFill, BsFileBarGraph } from "react-icons/bs";
 import { Exame } from "../models/Exame";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
+import { getKeys } from "../utils";
 
 function BioImpedancia() {
     var { altura, exames } = useAppSelector(selectUser)!;
 
-    const mostRecentExames = Exame.getNMostRecentExamesForGroup(
+    const examesRecentesBioImpedancia = Exame.getExamesRecentes(
         exames,
-        "bio-impedancia"
+        "bio-impedancia",
+        2
     );
-    // const labels = mostRecentExames.map(({ name }) => name);
-    const labels = Object.keys(mostRecentExames);
+    const twoMostRecentValues = Object.values(examesRecentesBioImpedancia).map(
+        (v) => v.map(({ value }) => value)
+    );
 
-    const values = Object.values(mostRecentExames).map((v) => {
-        
-        return v[0].value;
-    });
-    // const mostRecentValues = exames.filter(({ name }) => labels.includes(name)).map(({ value }) => value);
+    const lastValues = twoMostRecentValues.map((v) => v[0]);
+    const labels = getKeys(examesRecentesBioImpedancia);
 
     return (
         <Box w="full">
@@ -45,10 +46,14 @@ function BioImpedancia() {
             >
                 {exames.length === 0 && <NoDataFound />}
                 <HStack w="full">
-                    <Data labels={labels} values={values} userAltura={altura} />
+                    <Data
+                        labels={labels}
+                        ultimosDoisValores={twoMostRecentValues}
+                        userAltura={altura}
+                    />
                     <Pie
                         labels={labels}
-                        data={values}
+                        data={lastValues}
                         props={{
                             flex: [0.85, 0.7],
                             shadow: "-6px 0px 4px -3.5px rgba(0, 0, 0, 0.25)",
@@ -64,20 +69,37 @@ export default BioImpedancia;
 
 type DataProps = {
     labels: string[];
-    values: number[];
+    ultimosDoisValores: number[][];
     userAltura: number;
 };
 
-function Data({ labels, values, userAltura }: DataProps) {
+function Data({ labels, ultimosDoisValores, userAltura }: DataProps) {
     const calcularIMC = () => {
-        const peso = values.reduce((acc, curr) => acc + curr, 0);
+        const peso = ultimosDoisValores.reduce((prev, cur) => prev + cur[0], 0);
         const altura = userAltura / 100;
 
         const imc = peso / (altura * altura);
 
-        return imc.toFixed(2);
+        return Math.round(imc * 100) / 100;
     };
 
+    const imc = calcularIMC();
+
+    const Feedback = () => {
+        const base = (status: AlertStatus, title: string) => (
+            <Alert status={status} p="2" rounded={"sm"}>
+                <AlertIcon />
+                {title}
+            </Alert>
+        );
+
+        if (imc < 18.5) return base("warning", "Abaixo do Peso");
+        if (imc < 25) return base("success", "Peso Normal");
+        if (imc < 30) return base("warning", "Sobrepeso");
+        if (imc < 35) return base("error", "Obesidade");
+
+        return base("error", "Obesidade Grave");
+    };
     return (
         <VStack
             w={"full"}
@@ -88,7 +110,8 @@ function Data({ labels, values, userAltura }: DataProps) {
             justify="center"
         >
             {labels.map((label, index) => {
-                const rand = (Math.random() - 0.5) * 10;
+                const ultimosValores = ultimosDoisValores[index];
+                const [newValue, oldValue] = ultimosValores;
 
                 return (
                     <Box key={index} w="full">
@@ -96,21 +119,33 @@ function Data({ labels, values, userAltura }: DataProps) {
                             <Text fontSize={["smaller", "sm"]}>{label}:</Text>
                             <Spacer />
                             <Text fontSize={["smaller", "sm"]}>
-                                {values[index]}kg
+                                {newValue}kg
                             </Text>
                             <Box w="1" />
-                            <Icon
-                                as={rand < 0 ? AiFillCaretDown : AiFillCaretUp}
-                                color="gray.500"
-                                boxSize={[3, 4]}
-                            />
+                            {oldValue && (
+                                <>
+                                    <Icon
+                                        as={
+                                            newValue - oldValue < 0
+                                                ? AiFillCaretDown
+                                                : AiFillCaretUp
+                                        }
+                                        color="gray.500"
+                                        boxSize={[3, 4]}
+                                    />
 
-                            <Text
-                                fontSize={["smaller", "sm"]}
-                                suppressHydrationWarning
-                            >
-                                {Math.abs(rand).toFixed(0)}%
-                            </Text>
+                                    <Text
+                                        fontSize={["smaller", "sm"]}
+                                        suppressHydrationWarning
+                                    >
+                                        {(
+                                            ((newValue - oldValue) * 100) /
+                                            oldValue
+                                        ).toFixed(0)}
+                                        %
+                                    </Text>
+                                </>
+                            )}
                         </HStack>
 
                         <Divider h={1.5} />
@@ -119,12 +154,9 @@ function Data({ labels, values, userAltura }: DataProps) {
             })}
             <HStack w="full" justify={"space-between"}>
                 <Heading fontSize="22">IMC:</Heading>
-                <Heading fontSize="22">{calcularIMC()}</Heading>
+                <Heading fontSize="22">{imc}</Heading>
             </HStack>
-            <Alert status="success" p="1" rounded={"sm"}>
-                <AlertIcon />
-                Peso Normal
-            </Alert>
+            {Feedback()}
         </VStack>
     );
 }

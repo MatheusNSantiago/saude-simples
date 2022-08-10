@@ -25,7 +25,7 @@ import HeadingDetalhes from "./HeadingDetalhes";
 
 function Hemograma() {
     const user = useAppSelector(selectUser)!;
-    const exames = Exame.getNMostRecentExamesForGroup(
+    const exames = Exame.getExamesRecentes(
         user.exames,
         "hemograma",
         1
