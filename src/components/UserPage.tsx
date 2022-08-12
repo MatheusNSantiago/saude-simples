@@ -44,7 +44,7 @@ export const UserPage = () => {
                 });
             })
             .catch((_) => {
-                toast({ title: "Sei lá brother", status: "error" });
+                toast({ title: "Erro ao atualizar dados", status: "error" });
             })
             .finally(() => {
                 setIsLoading(false);

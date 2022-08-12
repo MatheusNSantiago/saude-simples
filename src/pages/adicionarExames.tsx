@@ -38,7 +38,7 @@ const AdicionarExames = () => {
         status: "error",
     });
 
-    const { isOpen, onOpen, onClose } = useDisclosure(); // parada que abre e fecha o modal
+    const { isOpen, onOpen, onClose } = useDisclosure(); // Abre e fecha a modal
 
     const [exameGroup, setExameGroup] = useState<ExameGroup>("bio-impedancia");
 
@@ -111,18 +111,18 @@ const AdicionarExames = () => {
                                 bgColor="#fa6e51"
                                 onClick={() => setExameGroup("hemograma")}
                             />
-                            <Card
+                            {/* <Card
                                 label="Coiso"
                                 isSelected={false}
                                 imgSrc="blood.svg"
                                 onClick={() => {}}
-                            />
-                            <Card
+                            /> */}
+                            {/* <Card
                                 label="Sangue"
                                 isSelected={false}
                                 imgSrc="blood.svg"
                                 onClick={() => {}}
-                            />
+                            /> */}
                         </HStack>
                         <Divider mt="3" />
                         {Object.entries(examesInfo[exameGroup]).map(

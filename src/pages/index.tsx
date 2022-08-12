@@ -87,17 +87,6 @@ const Home = () => {
                                 {user.idade} anos
                             </Text>
                         </VStack>
-                        <IconButton
-                            aria-label=""
-                            variant={"ghost"}
-                            rounded="full"
-                            shadow={"md"}
-                            bg="white"
-                            _hover={{ bg: "whiteAlpha.900" }}
-                            _active={{ shadow: "none" }}
-                            icon={<BsBell />}
-                            onClick={() => console.log(user)}
-                        />
                     </HStack>
                     <Box h="8" />
                     <CustomInput
